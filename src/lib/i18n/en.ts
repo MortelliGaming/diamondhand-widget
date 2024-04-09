@@ -1,0 +1,43 @@
+export const en = {
+    dhWidget: {
+        dhConnectWallet: {
+            connect: 'Connect',
+            disconnect: 'Disconnect',
+            selectWallet: 'Select Wallet',
+        },
+        dhTxDialog: {
+            dialogTitle: 'Diamondhand Widget',
+            noWalletConnected: 'No Wallet Connected',
+            prepareTransaction: 'Prepare Transaction',
+            fee: 'Fee',
+            feeDenom: 'Fee Denom',
+            memo: 'Memo',
+            gasLimit: 'Gas Limit',
+            broadcastMode: 'Broadcast Mode',
+            send: 'Send',
+            delegate: 'Delegate',
+            redelegate: 'Redelegate',
+            unbond: 'Unbond',
+            advanced: 'Advanced',
+            close: 'Close',
+            delegator: 'Delegator',
+            validator: 'Validator',
+            loadInactive: 'Load Inactive',
+            available: 'Available',
+            amount: 'Amount',
+            stakingDenom: 'Staking Denom',
+            sender: 'Sender',
+            proposal: 'Proposal',
+            denom: 'Denom',
+            deposit: 'Deposit',
+            receiver: 'Receiver',
+            vote: 'Vote',
+            yes: 'Yes',
+            no: 'No',
+            veto: 'No with Veto',
+            abstain: 'Abstain',
+            walletIsNoOperator: 'Wallet is no Validator Operator',
+            withdraw_commission: 'Withdraw Commission'
+        }
+    },
+}
