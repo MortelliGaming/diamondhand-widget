@@ -291,6 +291,18 @@ dhTxDialog.value.show('withdraw_commission', {
 })
 
 ```
+
+### Development
+
+ - start and run the project like a vue project
+
+ ```
+
+ npm install
+ npm run dev
+
+ ```
+
 ### Contribution
 
  - Feel free To Create A Pull Request
