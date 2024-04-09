@@ -1,6 +1,16 @@
 
 import { createPinia } from 'pinia'
-import { App } from 'vue'
+import type { App } from 'vue'
+export type { 
+    BlockchainConfigSimple,
+    TxDialogParams,
+    DelegateParams,
+    DepositParams,
+    RedelegateParams,
+    SendParams,
+    UnbondParams,
+    VoteParams,
+} from '../lib/utils/type'
 
 // I18n
 
@@ -10,6 +20,8 @@ import DhTxDialog from '../components/TxDialog/index.vue'
 
 // Stores
 import { useWalletStore } from '../stores/wallet'
+import { useBlockchainStore } from '../stores/blockchain'
+import { useTransactionStore } from '../stores/transaction'
 
 const DiamondhandWidgetPlugin = (app: App)=> {
     // registerPlugins(app)
@@ -26,4 +38,14 @@ const DiamondhandWidgetPlugin = (app: App)=> {
     return app;
 }
 
-export { DiamondhandWidgetPlugin, DhConnectWallet, DhTxDialog, useWalletStore };
+export { 
+    // Plugin
+    DiamondhandWidgetPlugin, 
+    // Stores
+    useWalletStore,
+    useBlockchainStore,
+    useTransactionStore,
+    // Components
+    DhConnectWallet, 
+    DhTxDialog,
+};

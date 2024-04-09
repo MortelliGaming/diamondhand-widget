@@ -14,7 +14,6 @@ declare module 'vue' {
     Delegate: typeof import('./components/TxDialog/messages/Delegate.vue')['default']
     Deposit: typeof import('./components/TxDialog/messages/Deposit.vue')['default']
     ExecuteContract: typeof import('./components/TxDialog/wasm/ExecuteContract.vue')['default']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     InstantiateContract: typeof import('./components/TxDialog/wasm/InstantiateContract.vue')['default']
     MigrateContract: typeof import('./components/TxDialog/wasm/MigrateContract.vue')['default']
     MigrateContract2: typeof import('./components/TxDialog/wasm/MigrateContract2.vue')['default']

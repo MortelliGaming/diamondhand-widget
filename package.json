@@ -2,6 +2,7 @@
   "name": "dh-widget",
   "version": "0.0.0",
   "main": "dist/diamondhand-widget.mjs",
+  "types": "diamondhand-widget.d.ts",
   "scripts": {
     "dev": "vite --port 5173",
     "build": "vue-tsc --noEmit && vite build",
@@ -27,6 +28,7 @@
     "core-js": "^3.34.0",
     "cross-fetch": "^4.0.0",
     "fflate": "^0.8.2",
+    "libsodium-wrappers-sumo": "^0.7.13",
     "roboto-fontface": "*",
     "vue": "^3.4.21",
     "vue-i18n": "^9.10.2",
@@ -58,6 +60,7 @@
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-router": "^0.8.4",
     "vite": "^5.1.5",
+    "vite-plugin-dts": "^3.8.1",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vite-plugin-vuetify": "^2.0.3",
     "vue-router": "^4.3.0",

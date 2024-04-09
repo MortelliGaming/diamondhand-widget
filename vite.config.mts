@@ -8,14 +8,16 @@ import VueRouter from 'unplugin-vue-router/vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 // Utilities
-import { defineConfig } from 'vite'
+import { defineConfig, } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import { resolve } from 'path'
-import { NodeGlobalsPolyfillPlugin as _NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
-import NodeGlobalsPolyfillPlugin from 'rollup-plugin-polyfill-node';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 import inject from '@rollup/plugin-inject';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+
+import dts from 'vite-plugin-dts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -89,7 +91,7 @@ export default defineConfig({
             global: 'globalThis',
         },
         plugins: [
-            _NodeGlobalsPolyfillPlugin({
+            NodeGlobalsPolyfillPlugin({
                 process: true,
                 buffer: true,
             }),
@@ -97,25 +99,29 @@ export default defineConfig({
     },
   },
   build: {
+    target: 'modules',
     lib: {
         // Could also be a dictionary or array of multiple entry points
         entry: resolve(__dirname, 'src/lib/main.ts'),
         name: 'diamondhand-widget',
         // the proper extensions will be added
         fileName: 'diamondhand-widget',
+        formats:['es']
     },
     commonjsOptions: {
         transformMixedEsModules: true,
     },
     rollupOptions: {
         external: ['vue','vuetify'],
-        output: {
-            manualChunks: undefined,
-        },
+        
         plugins: [
             inject({ Buffer: ['buffer', 'Buffer'], Process: ['process', 'Process']}),
-            NodeGlobalsPolyfillPlugin()
+            nodePolyfills(),
         ],
+        output: {
+          inlineDynamicImports: true,
+          format: 'module'
+        },
     },
   },
   server: {
