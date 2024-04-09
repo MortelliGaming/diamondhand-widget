@@ -33,10 +33,10 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
-import vuetify from './plugins/vuetify'
+// import vuetify from './plugins/vuetify'
 
 const app = createApp(App)
-app.use(vuetify)
+// app.use(vuetify)
 app.use(i18n)
 registerPlugins(app)
 app.mount('#app')
