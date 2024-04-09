@@ -22,8 +22,6 @@ import DhTxDialog from './components/TxDialog/index.vue';
 import { Account } from './lib/wallet/Wallet';
 import { BlockchainConfigSimple, TxDialogParams } from './lib/utils/type';
 import { Ref, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-const { t } = useI18n() // for no $t errors in files while dev
 
 const bConfig: Ref<BlockchainConfigSimple> = ref({
   "chain_name": "crossfi testnet",
