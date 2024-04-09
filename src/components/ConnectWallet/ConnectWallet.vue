@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ConnectWalletMenu from './ConnectWalletMenu.vue'
 import { type PropType, ref, watch } from 'vue';
-import { BlockchainConfigSimple } from '../../lib/utils/type';
+import type { BlockchainConfigSimple } from '../../lib/utils/type';
 import { useBlockchainStore } from '../../stores/blockchain';
 import { storeToRefs } from 'pinia';
 
@@ -12,9 +12,8 @@ const props = defineProps({
     }
 });
 
+const emit = defineEmits(['connect', 'disconnect', 'bech32Address', 'evmAddress']);
 
-
-const emit = defineEmits(['connect', 'disconnect', 'settings']);
 const { selectedBlockchain } = storeToRefs(useBlockchainStore())
 const connected = ref(null)
 const connectMenu = ref({
@@ -36,7 +35,8 @@ watch(props, () => {
             ref="connectMenu"
             @connect="(event) => emit('connect', event)"
             @disconnect="(event) => emit('disconnect', event)"
-            @settings="(event) => emit('settings', event)"
+            @bech32Address="(event) => emit('bech32Address', event)"
+            @evmAddress="(event) => emit('evmAddress', event)"
             theme="dark"
             v-show="!((connected as any)?.cosmosAddress) || true">
         </ConnectWalletMenu>

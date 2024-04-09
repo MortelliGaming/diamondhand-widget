@@ -25,8 +25,8 @@
             <v-list-item class="text-caption">
                 <v-list-item-title>{{ connectedWallet!.wallet }}</v-list-item-title>
                 <v-divider></v-divider>
-                <div><b>bech32:</b> {{ connectedWallet!.cosmosAddress }}</div>
-                <div><b>EVM:</b> {{ connectedWallet!.evmAddress }}</div>
+                <div @click="() => emit('bech32Address', connectedWallet!.cosmosAddress)"><b>bech32:</b> {{ connectedWallet!.cosmosAddress }}</div>
+                <div @click="() => emit('evmAddress', connectedWallet!.evmAddress)"><b>EVM:</b> {{ connectedWallet!.evmAddress }}</div>
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item class="text-caption">
@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useWalletStore } from '../../stores/wallet';
 import { useBlockchainStore } from '../../stores/blockchain';
@@ -82,7 +82,7 @@ const { selectedBlockchain } = storeToRefs(useBlockchainStore())
 
 const selectedWallet: Ref<WalletName|null> = ref(null)
 
-const emit = defineEmits(['connect', 'disconnect', 'settings']);
+const emit = defineEmits(['connect', 'disconnect', 'settings', 'bech32Address', 'evmAddress']);
 
 const overlayOpen = ref(false)
 
