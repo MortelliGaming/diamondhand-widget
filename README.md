@@ -5,6 +5,7 @@ Use this Vue Plugin to access Blockchain easily on your DApp or Website.
 ## 💿 Prerequsited
 
 - Your Project must use the Vue-18n Plugin
+
 [VueI18n](https://vue-i18n.intlify.dev/guide/installation.html)
 
 ```
