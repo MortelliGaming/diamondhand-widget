@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref, PropType, Ref } from 'vue';
 
-import { BlockchainConfigSimple, TxDialogParams } from '../../lib/utils/type';
-
-import TxPrepareDialog from './TxPrepareDialog.vue';
 import TxProgressDialog from './TxProgressDialog.vue';
+import TxPrepareDialog from './TxPrepareDialog.vue';
 
+import { BlockchainConfigSimple, TxDialogParams } from '../../lib/utils/type';
 import { useBlockchainStore } from '../../stores/blockchain';
 import { useTransactionStore } from '../../stores/transaction';
 
@@ -89,20 +88,22 @@ watch(isSendingTx, async (newValue, oldValue) => {
 selectedBlockchain.value = props.blockchainConfig
 </script>
 <template>
-    <v-overlay v-model="visible" class="align-center justify-center">
-        <tx-prepare-dialog
-            v-show="dialogState == DialogState.DIALOG_STATE_PREPARE"
-            ref="txPrepareDialog"
-            :type="txType"
-            :params="(txDialogParams as any)"
-            @close="hide"
-        />
-        <tx-progress-dialog
-            v-if="dialogState != DialogState.DIALOG_STATE_PREPARE"
-            @retry="() => { dialogState = DialogState.DIALOG_STATE_PREPARE }"
-            @close="hide()"
-        />
-    </v-overlay>
+    <div>
+        <v-overlay v-model="visible" class="align-center justify-center">
+            <tx-prepare-dialog
+                v-show="dialogState == DialogState.DIALOG_STATE_PREPARE"
+                ref="txPrepareDialog"
+                :type="txType"
+                :params="(txDialogParams as any)"
+                @close="hide"
+            />
+            <tx-progress-dialog
+                v-if="dialogState != DialogState.DIALOG_STATE_PREPARE"
+                @retry="() => { dialogState = DialogState.DIALOG_STATE_PREPARE }"
+                @close="hide()"
+            />
+        </v-overlay>
+    </div>
 </template>
 <script lang="ts" scoped>
 export default {

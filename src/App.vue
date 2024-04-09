@@ -68,7 +68,7 @@ const bConfig: Ref<BlockchainConfigSimple> = ref({
   }]
 })
 const dhTxDialog = ref({
-  show: function (_txType: string, params?: TxDialogParams) { },
+  show: function (txType: string, params?: TxDialogParams) { },
   hide: function () { },
 });
 

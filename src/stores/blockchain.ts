@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 import { type Ref, ref, watch, computed } from 'vue';
-import { BlockchainConfigSimple, CoinMetadata, GovProposalMetadata, GovProposalStatus } from '../lib/utils/type';
+import { type BlockchainConfigSimple, type CoinMetadata, type GovProposalMetadata, GovProposalStatus } from '../lib/utils/type';
 import { getCoinMetadata, getGovProposals } from '../lib/utils/http';
 
 export const useBlockchainStore = defineStore('dh-blockchain', () => {
@@ -63,7 +63,7 @@ export const useBlockchainStore = defineStore('dh-blockchain', () => {
     })
   }
 
-  watch(selectedBlockchain, (_, __) => {
+  watch(selectedBlockchain, () => {
     loadBlockchainData();
   })
 

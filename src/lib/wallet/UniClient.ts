@@ -1,14 +1,12 @@
-import { toBase64, fromBase64, toHex, fromBech32 } from "@cosmjs/encoding";
-import { EncodeObject, encodePubkey, Registry } from '@cosmjs/proto-signing'
-import { encodeSecp256k1Pubkey } from "@cosmjs/amino";
+import { toBase64} from "@cosmjs/encoding";
+import { Registry } from '@cosmjs/proto-signing'
 import { defaultRegistryTypes } from "@cosmjs/stargate";
-import { AuthInfo, TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
-import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
-import { AbstractWallet, WalletArgument, WalletName, createWallet } from "./Wallet";
+import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
+import { type AbstractWallet, type WalletArgument, WalletName, createWallet } from "./Wallet";
 import { post } from "../utils/http";
-import { BroadcastMode, Transaction, TxResponse } from "../utils/type";
+import { BroadcastMode, type Transaction, type TxResponse } from "../utils/type";
 import { wasmTypes } from "@cosmjs/cosmwasm-stargate/build/modules";
-import { makeAuthInfoBytes, makeSignDoc, TxBodyEncodeObject } from "@cosmjs/proto-signing/build";
+import { makeAuthInfoBytes, type TxBodyEncodeObject } from "@cosmjs/proto-signing/build";
 import { Any } from "cosmjs-types/google/protobuf/any";
 
 export function isEthermint(chainId: string) {
@@ -124,7 +122,7 @@ export class UniClient {
     // }
 
 
-  async broadcastTx(endpoint, bodyBytes: TxRaw, mode: BroadcastMode = BroadcastMode.SYNC) : Promise<{tx_response: TxResponse}> {
+  async broadcastTx(endpoint: string, bodyBytes: TxRaw, mode: BroadcastMode = BroadcastMode.SYNC) : Promise<{tx_response: TxResponse}> {
     // const txbytes = bodyBytes.authInfoBytes ? TxRaw.encode(bodyBytes).finish() : bodyBytes
     const txbytes = TxRaw.encode(bodyBytes).finish() 
     const txString = toBase64(txbytes)

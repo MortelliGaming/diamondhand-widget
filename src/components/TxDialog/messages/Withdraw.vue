@@ -48,6 +48,9 @@ const isValid = computed(() => {
 })
 
 function initial() {
+    if(props.params) {
+        // 
+    }
     getDelegateRewards(selectedBlockchain.value?.api[0] || '', connectedWallet.value?.cosmosAddress || '').then(x => {
         rewards.value = x.rewards
     })

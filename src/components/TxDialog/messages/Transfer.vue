@@ -1,13 +1,9 @@
 <script lang="ts" setup>
-import { ComputedRef, PropType, computed, onMounted, ref } from 'vue';
+import { PropType, computed, ref } from 'vue';
 import { getStakingParam, getDenomTraces } from '../../../lib/utils/http';
 import { Coin, CoinMetadata } from '../../../lib/utils/type';
-/*import ChainRegistryClient from '@ping-pub/chain-registry-client';
-import { IBCPath } from '@ping-pub/chain-registry-client/dist/types';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc'; */
+
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
-// dayjs.extend(utc);
 
 const props = defineProps({
     endpoint: { type: String, required: true },
@@ -23,7 +19,6 @@ const amount = ref('');
 const amountDenom = ref('');
 const recipient = ref('');
 const denom = ref('');
-const dest = ref('');
 // const chains = ref([] as IBCPath[]);
 const sourceChain = ref(
     {} as { channel_id: string; port_id: string } | undefined
@@ -54,26 +49,6 @@ const msgs = computed(() => {
         },
     ];
 });
-const destDisabled = computed(() => {
-    const disable = denom.value.startsWith('ibc/');
-    if (disable) dest.value = '';
-    return disable;
-});
-
-function selectDest() {
-    /*client.fetchIBCPathInfo(dest.value).then((info) => {
-        if (info.chain_1.chain_name === chainName) {
-            sourceChain.value = info.channels.find(
-                (x) => x.chain_1.port_id === 'transfer'
-            )?.chain_1;
-        } else {
-            sourceChain.value = info.channels.find(
-                (x) => x.chain_2.port_id === 'transfer'
-            )?.chain_2;
-        }
-    });
-    */
-}
 
 function updateIBCToken() {
     const hash = String(denom.value).replace('ibc/', '');
@@ -119,15 +94,20 @@ const showBalances = computed(() => {
     );
 });
 
+function setAmountDenom(denom: string) {
+    amountDenom.value = denom;
+}
+
 const units = computed(() => {
     if (!props.metadata || !props.metadata[denom.value]) {
-        amountDenom.value = denom.value;
+        setAmountDenom(denom.value);
         return [{ denom: denom.value, exponent: 0, aliases: [] }];
     }
-    const list = props.metadata[denom.value].denom_units.sort(
+    let list = props.metadata[denom.value].denom_units;
+    list = list.sort(
         (a, b) => b.exponent - a.exponent
     );
-    if (list.length > 0) amountDenom.value = list[0].denom;
+    if (list.length > 0) { setAmountDenom(list[0].denom) }
     return list;
 });
 
@@ -192,6 +172,7 @@ defineExpose({ msgs, isValid, initial });
                 <option
                     v-for="{ base, display } in showBalances"
                     :value="base.denom"
+                    :key="base.denom"
                 >
                     {{ display.amount }} {{ formatDenom(display.denom) }}
                 </option>
@@ -244,7 +225,7 @@ defineExpose({ msgs, isValid, initial });
                     class="input border border-gray-300 dark:border-gray-600 w-full dark:text-white"
                 />
                 <select v-model="amountDenom" class="select select-bordered dark:text-white">
-                    <option v-for="u in units" :value="u.denom">{{ formatDenom(u.denom) }}</option>
+                    <option v-for="u in units" :value="u.denom" :key="u.denom">{{ formatDenom(u.denom) }}</option>
                 </select>
             </label>
         </div>

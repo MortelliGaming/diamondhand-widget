@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch'
-import { Coin, CoinMetadata, GovProposalStatus, TxResponse } from './type'
+import type { Coin, CoinMetadata, GovProposalStatus, TxResponse } from './type'
 
 export async function get(url: string) {
     return (await fetch(url)).json()
@@ -22,25 +22,6 @@ export async function post(url: string, data: any) {
       return response.json() // parses JSON response into native JavaScript objects
 }
 
-function findField(obj: any, name: string) {
-
-    if(!obj) return undefined
-
-    const list = Object.keys(obj).filter(x => x && !x.startsWith("@"))
-    if(list.includes(name)) {
-        return obj[name]
-    }
-    for(let i = 0; i < list.length; i++) {
-        const field = obj[list[i]]
-        if(typeof field === 'string') continue
-        if(Array.isArray(field)) continue
-
-        const sub = findField(field, name)
-        if(sub) return sub
-    }
-    return undefined
-}
-
 // /cosmos/base/tendermint/v1beta1/blocks/latest
 export async function getLatestBlock(endpoint: string) {
     const url = `${endpoint}/cosmos/base/tendermint/v1beta1/blocks/latest`
@@ -60,7 +41,7 @@ export async function getAccount(endpoint: string, address: string) {
             }
         }      
     }catch(err) {
-        throw new Error(err)
+        throw new Error(err as any)
     }
 
 }

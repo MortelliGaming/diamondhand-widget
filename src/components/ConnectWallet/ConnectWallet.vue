@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ConnectWalletMenu from './ConnectWalletMenu.vue'
-import { PropType, onMounted, ref, watch, onUnmounted } from 'vue';
+import { PropType, ref, watch } from 'vue';
 import { BlockchainConfigSimple } from '../../lib/utils/type';
 import { useBlockchainStore } from '../../stores/blockchain';
 import { storeToRefs } from 'pinia';

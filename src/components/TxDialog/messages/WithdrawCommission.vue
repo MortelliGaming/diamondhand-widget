@@ -22,7 +22,6 @@ const props = defineProps({
     params: Object as any
 })
 
-
 const activeValidators = ref([])
 const inactiveValidators = ref([])
 
@@ -95,6 +94,9 @@ const isValid = computed(() => {
 
 
 async function initial() {
+  if(props.params) {
+    //
+  }
   getDelegateRewards(selectedBlockchain.value?.api[0] || '', connectedWallet.value?.cosmosAddress || '').then(x => {
     rewards.value = x.rewards
   })

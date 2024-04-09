@@ -11,7 +11,7 @@ import {
     type Account
 } from '../lib/wallet/Wallet'
 import { getBalance } from '../lib/utils/http';
-import { Coin } from '../lib/utils/type';
+import type { Coin } from '../lib/utils/type';
 import { useBlockchainStore } from './blockchain';
 import { TokenUnitConverter } from '../lib/utils/TokenUnitConverter';
 

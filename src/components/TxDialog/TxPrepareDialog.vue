@@ -154,10 +154,6 @@ function sendTransaction() {
     })
 }
 
-function showTitle() {
-    return (props.type || 'Sending Transaction').replace(/_/g, ' ');
-}
-
 function emitClose() {
     emit('close')
 }

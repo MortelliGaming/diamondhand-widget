@@ -1,4 +1,4 @@
-import { Coin, CoinMetadata } from "./type";
+import type { Coin, CoinMetadata } from "./type";
 import BigNumber from 'bignumber.js';
 
 export class TokenUnitConverter {
