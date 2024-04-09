@@ -302,4 +302,4 @@ dhTxDialog.value.show('withdraw_commission', {
 
 ### 🛠️ Contact
 
-[diamondhand](mailto:info@diamondhand.capital)
+- [diamondhand](mailto:info@diamondhand.capital)
