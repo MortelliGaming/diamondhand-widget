@@ -298,7 +298,7 @@ dhTxDialog.value.show('withdraw_commission', {
 
 - 📄 [Vuetify](https://vuetifyjs.com/)
 - 🏬 [Vue3](https://vuejs.org/)
-- 🧩 [Ping.Pub] (https://ping.pub)
+- 🧩 [Ping Pub] (https://ping.pub)
 
 ### 🛠️ Contact
 
