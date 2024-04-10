@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { type PropType, computed, ref, type Ref } from 'vue';
 
-import { useWalletStore } from '../../../stores/wallet';
-import { useBlockchainStore } from '../../../stores/blockchain';
+import { useWalletStore } from '../../../lib/stores/wallet';
+import { useBlockchainStore } from '../../../lib/stores/blockchain';
 import { storeToRefs } from 'pinia';
 
 import { useI18n } from 'vue-i18n';
@@ -104,4 +104,4 @@ defineExpose({msgs, isValid, initial})
             </v-radio-group>
         </v-col>
     </v-row>
-</template>
+</template>../../../lib/stores/wallet../../../lib/stores/blockchain

@@ -9,14 +9,14 @@ import { decimal2percent } from '../../../lib/utils/format';
 import type { DelegateParams } from '../../../lib/utils/type';
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
 
-import { useWalletStore } from '../../../stores/wallet';
-import { useBlockchainStore } from '../../../stores/blockchain';
+import { useWalletStore } from '../../../lib/stores/wallet';
+import { useBlockchainStore } from '../../../lib/stores/blockchain';
 import { storeToRefs } from 'pinia';
 
 
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
-import type { Validator } from '@/types';
+import type { Validator } from '@/types'
 
 const { t } = useI18n({
     messages

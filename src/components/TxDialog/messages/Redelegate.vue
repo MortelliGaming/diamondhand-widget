@@ -5,8 +5,8 @@ import { decimal2percent } from '../../../lib/utils/format'
 import type { Coin, RedelegateParams } from '../../../lib/utils/type';
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
 
-import { useWalletStore } from '../../../stores/wallet';
-import { useBlockchainStore } from '../../../stores/blockchain';
+import { useWalletStore } from '../../../lib/stores/wallet';
+import { useBlockchainStore } from '../../../lib/stores/blockchain';
 import { storeToRefs } from 'pinia';
 
 import { useI18n } from 'vue-i18n';
@@ -231,4 +231,4 @@ defineExpose({msgs, isValid, initial})
             </v-select>
         </v-col>
     </v-row>
-</template>
+</template>../../../lib/stores/wallet../../../lib/stores/blockchain

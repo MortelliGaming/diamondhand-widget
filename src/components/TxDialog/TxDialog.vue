@@ -5,8 +5,8 @@ import TxProgressDialog from './TxProgressDialog.vue';
 import TxPrepareDialog from './TxPrepareDialog.vue';
 
 import type { BlockchainConfigSimple, DhDialogMessageType, TxDialogParams } from '../../lib/utils/type';
-import { useBlockchainStore } from '../../stores/blockchain';
-import { useTransactionStore } from '../../stores/transaction';
+import { useBlockchainStore } from '../../lib/stores/blockchain';
+import { useTransactionStore } from '../../lib/stores/transaction';
 
 // evm messages
 
@@ -115,3 +115,4 @@ export default {
 }
 
 </style>
+../../lib/stores/blockchain../../lib/stores/transaction

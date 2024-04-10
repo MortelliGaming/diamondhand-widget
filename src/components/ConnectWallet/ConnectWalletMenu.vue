@@ -65,8 +65,8 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useWalletStore } from '../../stores/wallet';
-import { useBlockchainStore } from '../../stores/blockchain';
+import { useWalletStore } from '../../lib/stores/wallet';
+import { useBlockchainStore } from '../../lib/stores/blockchain';
 import { WalletName } from '../../lib/wallet/Wallet'
 import { coinType2HDPath } from '../../lib/utils/format';
 import { useI18n } from 'vue-i18n';

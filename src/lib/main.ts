@@ -19,9 +19,9 @@ import DhConnectWallet from '../components/ConnectWallet/ConnectWallet.vue'
 import DhTxDialog from '../components/TxDialog/TxDialog.vue'
 
 // Stores
-import { useWalletStore } from '../stores/wallet'
-import { useBlockchainStore } from '../stores/blockchain'
-import { useTransactionStore } from '../stores/transaction'
+import { useWalletStore } from './stores/wallet'
+import { useBlockchainStore } from './stores/blockchain'
+import { useTransactionStore } from './stores/transaction'
 
 const DiamondhandWidgetPlugin = (app: App)=> {
     // registerPlugins(app)

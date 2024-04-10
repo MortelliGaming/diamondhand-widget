@@ -5,12 +5,12 @@ import { ref } from 'vue';
 import { 
     WalletName,
     readWallet
-} from '../lib/wallet/Wallet'
-import { getAccount, getTxByHash } from '../lib/utils/http';
-import { UniClient } from '../lib/wallet/UniClient';
+} from '../wallet/Wallet'
+import { getAccount, getTxByHash } from '../utils/http';
+import { UniClient } from '../wallet/UniClient';
 import { useWalletStore } from './wallet';
 import { useBlockchainStore } from './blockchain';
-import type { BroadcastMode } from '../lib/utils/type';
+import type { BroadcastMode } from '../utils/type';
 
 export const useTransactionStore = defineStore('dh-transaction', () => {
   

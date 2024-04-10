@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 
 import { type Ref, ref, watch, computed } from 'vue';
-import { type BlockchainConfigSimple, type CoinMetadata, type GovProposalMetadata, GovProposalStatus } from '../lib/utils/type';
-import { getCoinMetadata, getGovProposals } from '../lib/utils/http';
+import { type BlockchainConfigSimple, type CoinMetadata, type GovProposalMetadata, GovProposalStatus } from '../utils/type';
+import { getCoinMetadata, getGovProposals } from '../utils/http';
 
 export const useBlockchainStore = defineStore('dh-blockchain', () => {
   const selectedBlockchain: Ref<BlockchainConfigSimple|null> = ref(null)

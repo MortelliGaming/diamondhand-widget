@@ -7,9 +7,9 @@ import {
 } from '../../lib/utils/http';
 import { BroadcastMode, type TxDialogParams } from '../../lib/utils/type';
 
-import { useWalletStore } from '../../stores/wallet';
-import { useBlockchainStore } from '../../stores/blockchain';
-import { useTransactionStore } from '../../stores/transaction';
+import { useWalletStore } from '../../lib/stores/wallet';
+import { useBlockchainStore } from '../../lib/stores/blockchain';
+import { useTransactionStore } from '../../lib/stores/transaction';
 
 // cosmos sdk messages
 import Delegate from './messages/Delegate.vue';
@@ -281,3 +281,4 @@ export default {
 }
 
 </style>
+../../lib/stores/wallet../../lib/stores/blockchain../../lib/stores/transaction

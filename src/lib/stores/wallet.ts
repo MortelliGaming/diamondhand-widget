@@ -9,11 +9,11 @@ import {
     removeWallet, 
     type ConnectedWallet,
     type Account
-} from '../lib/wallet/Wallet'
-import { getBalance } from '../lib/utils/http';
-import type { Coin } from '../lib/utils/type';
+} from '../wallet/Wallet'
+import { getBalance } from '../utils/http';
+import type { Coin } from '../utils/type';
 import { useBlockchainStore } from './blockchain';
-import { TokenUnitConverter } from '../lib/utils/TokenUnitConverter';
+import { TokenUnitConverter } from '../utils/TokenUnitConverter';
 
 export const useWalletStore = defineStore('dh-wallet', () => {
   const connectedWallet: Ref<ConnectedWallet|null> = ref(null)// ref(readWallet(selectedWallet.value, props.hdPath) as ConnectedWallet);

@@ -2,8 +2,8 @@
 import { computed, ref, type ComputedRef } from 'vue';
 import { getActiveValidators, getDelegateRewards } from '../../../lib/utils/http';
 
-import { useWalletStore } from '../../../stores/wallet';
-import { useBlockchainStore } from '../../../stores/blockchain';
+import { useWalletStore } from '../../../lib/stores/wallet';
+import { useBlockchainStore } from '../../../lib/stores/blockchain';
 import { storeToRefs } from 'pinia';
 
 import { useI18n } from 'vue-i18n';
@@ -108,7 +108,6 @@ async function initial() {
 defineExpose({ msgs, isValid, initial })
 </script>
 <template>
-  {{  msgs }}
   <v-row no-gutters class="font-caption">
       <v-col>
           <v-text-field
@@ -129,4 +128,4 @@ defineExpose({ msgs, isValid, initial })
           ></v-text-field>
       </v-col>
   </v-row>
-</template>
+</template>../../../lib/stores/wallet../../../lib/stores/blockchain

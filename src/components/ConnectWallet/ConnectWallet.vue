@@ -2,7 +2,7 @@
 import ConnectWalletMenu from './ConnectWalletMenu.vue'
 import { type PropType, ref, watch } from 'vue';
 import type { BlockchainConfigSimple } from '../../lib/utils/type';
-import { useBlockchainStore } from '../../stores/blockchain';
+import { useBlockchainStore } from '../../lib/stores/blockchain';
 import { storeToRefs } from 'pinia';
 
 const props = defineProps({
@@ -44,3 +44,4 @@ watch(props, () => {
 </template>
 
 <style scoped></style>
+../../lib/stores/blockchain

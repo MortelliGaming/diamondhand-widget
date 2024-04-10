@@ -17,9 +17,9 @@ declare const DiamondhandWidgetPlugin: (app: App) => App
 export { DiamondhandWidgetPlugin }
 
 // Stores
-export function useWalletStore(): typeof import('./src/stores/wallet')['useWalletStore']
-export function useBlockchainStore(): typeof import('./src/stores/blockchain')['useBlockchainStore']
-export function useTransactionStore(): typeof import('./src/stores/transaction')['useTransactionStore']
+export function useWalletStore(): typeof import('./src/lib/stores/wallet')['useWalletStore']
+export function useBlockchainStore(): typeof import('./src/lib/stores/blockchain')['useBlockchainStore']
+export function useTransactionStore(): typeof import('./src/lib/stores/transaction')['useTransactionStore']
 
 // Components
 export const DhConnectWallet: typeof import('./src/components/ConnectWallet/ConnectWallet.vue')['default']

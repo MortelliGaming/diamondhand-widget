@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useTransactionStore } from '../../stores/transaction';
+import { useTransactionStore } from '../../lib/stores/transaction';
 const {
     txError,
     txMsg,
@@ -85,3 +85,4 @@ export default {
 }
 
 </style>
+../../lib/stores/transaction
