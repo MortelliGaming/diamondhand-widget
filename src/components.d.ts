@@ -7,7 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AppFooter: typeof import('./components/AppFooter.vue')['default']
     ClearAdmin: typeof import('./components/TxDialog/wasm/ClearAdmin.vue')['default']
     ConnectWallet: typeof import('./components/ConnectWallet/ConnectWallet.vue')['default']
     ConnectWalletMenu: typeof import('./components/ConnectWallet/ConnectWalletMenu.vue')['default']
