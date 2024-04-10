@@ -94,4 +94,4 @@ setTimeout(() => {
         :type="'deposit' "/>
     </v-main>
   </v-app>
-</template>./components/TxDialog/TxDialog.vue
+</template>

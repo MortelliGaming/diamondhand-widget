@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { PropType, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import * as fflate from 'fflate';
 
 const props = defineProps({
@@ -13,8 +13,16 @@ const addresses = ref("")
 const permission = ref('3')
 const zip = ref('gzip')
 
-function loadWasm(event) {
-    const file =  event.target.files[0]
+function loadWasm(event: Event) {
+    if(!event.target) {
+        return
+    }
+    const input = event.target as HTMLInputElement;
+    if(!input.files?.length) {
+        return
+    } 
+    let file = input.files[0] || ''
+
     if(file) {
         var reader = new FileReader();    
         reader.addEventListener('load', (e)=>{

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { PropType, computed, ref, Ref } from 'vue';
+import { type PropType, computed, ref, type Ref } from 'vue';
 
 import { useWalletStore } from '../../../stores/wallet';
 import { useBlockchainStore } from '../../../stores/blockchain';
@@ -7,7 +7,7 @@ import { storeToRefs } from 'pinia';
 
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
-import { GovProposalMetadata, VoteParams } from '../../../lib/utils/type';
+import type { GovProposalMetadata, VoteParams } from '../../../lib/utils/type';
 
 const { t } = useI18n({
     messages

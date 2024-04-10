@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { PropType, computed, ref } from 'vue';
+import { type PropType, computed, ref } from 'vue';
 import { getStakingParam, getDenomTraces } from '../../../lib/utils/http';
-import { Coin, CoinMetadata } from '../../../lib/utils/type';
+import type { Coin, CoinMetadata } from '../../../lib/utils/type';
 
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
 

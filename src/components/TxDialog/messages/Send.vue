@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { PropType, computed, ref } from 'vue';
+import { type PropType, computed, ref } from 'vue';
 import {
     getStakingParam,
 } from '../../../lib/utils/http';
-import { SendParams } from '../../../lib/utils/type';
+import type { SendParams } from '../../../lib/utils/type';
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
 
 import { useWalletStore } from '../../../stores/wallet';

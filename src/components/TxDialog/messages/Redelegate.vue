@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { ComputedRef, PropType, Ref, computed, ref } from 'vue';
+import { type ComputedRef, type PropType, type Ref, computed, ref } from 'vue';
 import { getActiveValidators, getInactiveValidators, getStakingParam, getDelegationsByDelegator } from '../../../lib/utils/http'
 import { decimal2percent } from '../../../lib/utils/format'
-import { Coin, RedelegateParams } from '../../../lib/utils/type';
+import type { Coin, RedelegateParams } from '../../../lib/utils/type';
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
 
 import { useWalletStore } from '../../../stores/wallet';
@@ -12,6 +12,7 @@ import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
 import { fromBech32, toBech32 } from '@cosmjs/encoding';
+import type { Validator } from '@/types';
 
 const { t } = useI18n({
     messages
@@ -163,7 +164,7 @@ async function initial() {
     await getActiveValidators(selectedBlockchain.value?.api[0] || '').then(x => {
         activeValidators.value = x.validators
         if(destinationValidator.value == '') {
-            destinationValidator.value = x.validators.find(v => v.description.identity === '32BEA58DE3D6EDB7')?.operator_address
+            destinationValidator.value = x.validators.find((v: Validator) => v.description.identity === '32BEA58DE3D6EDB7')?.operator_address
         }
     })
 }

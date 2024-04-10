@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { ComputedRef, PropType, computed, ref } from 'vue';
+import { type ComputedRef, type PropType, computed, ref } from 'vue';
 import {
     getActiveValidators,
     getInactiveValidators,
     getStakingParam,
 } from '../../../lib/utils/http';
 import { decimal2percent } from '../../../lib/utils/format';
-import { DelegateParams } from '../../../lib/utils/type';
+import type { DelegateParams } from '../../../lib/utils/type';
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
 
 import { useWalletStore } from '../../../stores/wallet';
@@ -16,6 +16,7 @@ import { storeToRefs } from 'pinia';
 
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
+import type { Validator } from '@/types';
 
 const { t } = useI18n({
     messages
@@ -134,7 +135,7 @@ function initial() {
         activeValidators.value = x.validators;
         if (!validator.value) {
             validator.value = x.validators.find(
-                (v) => v.description.identity === '32BEA58DE3D6EDB7'
+                (v: Validator) => v.description.identity === '32BEA58DE3D6EDB7'
             )?.operator_address;
         }
     });

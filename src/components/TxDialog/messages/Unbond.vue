@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { PropType, computed, ref, ComputedRef, Ref } from 'vue';
+import { type PropType, computed, ref, type ComputedRef, type Ref } from 'vue';
 import { getActiveValidators, getDelegationsByDelegator, getStakingParam } from '../../../lib/utils/http'
-import { Coin, UnbondParams } from '../../../lib/utils/type';
+import type { Coin, UnbondParams } from '../../../lib/utils/type';
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
 
 import { useWalletStore } from '../../../stores/wallet';

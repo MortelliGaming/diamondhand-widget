@@ -10,7 +10,7 @@ import { getAccount, getTxByHash } from '../lib/utils/http';
 import { UniClient } from '../lib/wallet/UniClient';
 import { useWalletStore } from './wallet';
 import { useBlockchainStore } from './blockchain';
-import { BroadcastMode } from '../lib/utils/type';
+import type { BroadcastMode } from '../lib/utils/type';
 
 export const useTransactionStore = defineStore('dh-transaction', () => {
   
@@ -94,7 +94,7 @@ export const useTransactionStore = defineStore('dh-transaction', () => {
       }
 
       const txRaw = await client.sign(tx);
-      const response = await client.broadcastTx(selectedBlockchain.value?.api[0], txRaw, broadcastMode);
+      const response = await client.broadcastTx(selectedBlockchain.value?.api[0] || '', txRaw, broadcastMode);
 
       // show submitting view
       txHash.value = response.tx_response.txhash

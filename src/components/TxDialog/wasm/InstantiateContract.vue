@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { Coin } from '@cosmjs/amino';
-import { PropType, computed, ref } from 'vue';
+import type { Coin } from '@cosmjs/amino';
+import { type PropType, computed, ref } from 'vue';
 import { toBase64 } from '@cosmjs/encoding'
-import { CoinMetadata } from '../../../lib/utils/type';
+import type { CoinMetadata } from '../../../lib/utils/type';
 
 const props = defineProps({
     endpoint: { type: String, required: true },
@@ -101,7 +101,7 @@ defineExpose({msgs, isValid, initial})
             <label v-for="(coin, i) in funds" class="input-group" :key="i">
                 <input v-model="coin.amount" type="text" placeholder="0" class="input border border-gray-300 dark:border-gray-600 w-full dark:text-white" />
                 <select v-model="coin.denom" class="select border border-gray-300 dark:border-gray-600 dark:text-white">
-                    <option v-for="b in balances" :value="b.denom">{{ b.denom.substring(0, 10) }}</option>
+                    <option v-for="b in balances" :value="b.denom" :key=b.denom>{{ b.denom.substring(0, 10) }}</option>
                 </select>
             </label>
         </div>

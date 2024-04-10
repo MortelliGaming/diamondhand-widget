@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed, ref, Ref, PropType } from 'vue';
-import { GovProposalMetadata, DepositParams } from '../../../lib/utils/type';
+import { computed, ref, type Ref, type PropType } from 'vue';
+import type { GovProposalMetadata, DepositParams } from '../../../lib/utils/type';
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
 
 import { useWalletStore } from '../../../stores/wallet';
