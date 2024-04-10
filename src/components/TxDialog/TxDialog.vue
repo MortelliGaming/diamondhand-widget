@@ -4,7 +4,7 @@ import { ref, type PropType, type Ref } from 'vue';
 import TxProgressDialog from './TxProgressDialog.vue';
 import TxPrepareDialog from './TxPrepareDialog.vue';
 
-import type { BlockchainConfigSimple, TxDialogParams } from '../../lib/utils/type';
+import type { BlockchainConfigSimple, DhDialogMessageType, TxDialogParams } from '../../lib/utils/type';
 import { useBlockchainStore } from '../../stores/blockchain';
 import { useTransactionStore } from '../../stores/transaction';
 
@@ -41,15 +41,15 @@ const visible = ref(false)
 
 const emit = defineEmits(['submitted', 'confirmed', 'error']);
 
-function show(_txType: string, params?: TxDialogParams) {
+function show(txMessageType: DhDialogMessageType, dialogParams?: TxDialogParams) {
     skipGasEstimation.value = false
     txError.value = ''
     txMsg.value = ''
     txHash.value = ''
     txStep.value = 0
     dialogState.value = DialogState.DIALOG_STATE_PREPARE
-    txType.value = _txType;
-    txDialogParams.value = params
+    txType.value = txMessageType;
+    txDialogParams.value = dialogParams
     visible.value = true;
     // the ref is set a little bit later
     setTimeout(() => {

@@ -165,3 +165,5 @@ export type Asset = {
   isStakingAsset: boolean
   isFeeAsset: boolean
 }
+
+export type DhDialogMessageType = 'delegate'|'deposit'|'redelegate'|'send'|'unbond'|'vote'|'withdraw'|'withdraw_commission'
