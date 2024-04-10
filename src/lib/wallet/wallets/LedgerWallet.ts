@@ -1,16 +1,16 @@
 import { fromBase64, fromBech32, toHex, toBech32, toBase64 } from "@cosmjs/encoding";
-import { Registry, TxBodyEncodeObject, encodePubkey, makeAuthInfoBytes } from "@cosmjs/proto-signing"
-import { AbstractWallet, Account, DEFAULT_HDPATH, WalletArgument, WalletName, extractChainId } from "../Wallet"
+import { Registry, type TxBodyEncodeObject, encodePubkey, makeAuthInfoBytes, type EncodeObject } from "@cosmjs/proto-signing"
+import { type AbstractWallet, type Account, DEFAULT_HDPATH, type WalletArgument, WalletName, extractChainId } from "../Wallet"
 import { AminoTypes, createDefaultAminoConverters } from "@cosmjs/stargate"
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb"
 import TransportWebBLE from "@ledgerhq/hw-transport-web-ble"
 import { LedgerSigner } from "@cosmjs/ledger-amino"
-import { Transaction } from "../../utils/type"
-import { Chain, createTxRawEIP712, signatureToWeb3Extension } from "@tharsis/transactions";
+import type { Transaction } from "../../utils/type"
+import { type Chain, createTxRawEIP712, signatureToWeb3Extension } from "@tharsis/transactions";
 import { createEIP712, generateFee, generateMessageWithMultipleTransactions, generateTypes } from "@tharsis/eip712";
 import { defaultMessageAdapter } from "../EthermintMessageAdapter";
 import { createTransactionWithMultipleMessages } from "@tharsis/proto";
-import { encodeSecp256k1Pubkey, makeSignDoc as makeSignDocAmino } from "@cosmjs/amino";
+import { encodeSecp256k1Pubkey, makeSignDoc as makeSignDocAmino, type StdFee } from "@cosmjs/amino";
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { stringToPath } from '@cosmjs/crypto'
 import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
@@ -25,6 +25,7 @@ export class LedgerWallet implements AbstractWallet {
     aminoTypes = new AminoTypes({...createDefaultAminoConverters(), ...createWasmAminoConverters()})
     conf: WalletArgument
     constructor(arg: WalletArgument, registry: Registry) {
+        this.name = WalletName.Ledger
         this.transport = arg.transport || 'usb'
         this.hdPath = arg.hdPath || DEFAULT_HDPATH
         this.registry = registry
@@ -67,6 +68,9 @@ export class LedgerWallet implements AbstractWallet {
         return accounts
     }
     supportCoinType(coinType?: string | undefined): Promise<boolean> {
+        if(coinType) {
+            //
+        }
         return Promise.resolve(true);
     }
     isEthermint() {
@@ -126,7 +130,17 @@ export class LedgerWallet implements AbstractWallet {
         return rawTx
     }
 
-    makeRawTxEvmos(sender, messages, memo, fee, signature, chain): Uint8Array {
+    makeRawTxEvmos(sender: {
+            accountAddress: string,
+            sequence: number,
+            accountNumber: number,
+            pubkey: string,
+        }, 
+        messages: readonly EncodeObject[],
+        memo: string,
+        fee: StdFee,
+        signature: string,
+        chain: Chain): Uint8Array {
         /// evmos style
         /// *
         const protoMsgs = messages.map(x => {

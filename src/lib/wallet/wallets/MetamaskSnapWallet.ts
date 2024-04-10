@@ -1,9 +1,9 @@
 import {
-    AbstractWallet,
-    Account,
-    WalletArgument,
+    type AbstractWallet,
+    type WalletArgument,
     WalletName,
     keyType,
+    type Account,
 } from '../Wallet';
 import {
     fromBase64,
@@ -13,11 +13,11 @@ import {
 } from '@cosmjs/encoding';
 import {
     Registry,
-    TxBodyEncodeObject,
+    type TxBodyEncodeObject,
     makeAuthInfoBytes,
     makeSignDoc,
 } from '@cosmjs/proto-signing';
-import { Transaction } from '../../utils/type';
+import type { Transaction } from '../../utils/type';
 import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
 // import { AminoTypes, createDefaultAminoConverters } from '@cosmjs/stargate';
 import { Any } from 'cosmjs-types/google/protobuf/any';
@@ -35,6 +35,7 @@ export class MetamaskSnapWallet implements AbstractWallet {
     // aminoTypes = new AminoTypes( {...createDefaultAminoConverters(), ...createWasmAminoConverters()});
 
     constructor(arg: WalletArgument, registry: Registry) {
+        this.name = WalletName.MetamaskSnap
         this.chainId = arg.chainId || 'cosmoshub';
         this.registry = registry;
         this.prefix = arg.prefix || 'cosmos';
@@ -58,6 +59,9 @@ export class MetamaskSnapWallet implements AbstractWallet {
     }
 
     async supportCoinType(coinType?: string): Promise<boolean> {
+        if(coinType) {
+            //
+        }
         return true;
     }
 

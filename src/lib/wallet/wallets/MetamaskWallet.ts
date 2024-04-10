@@ -1,17 +1,16 @@
-import { AbstractWallet, Account, WalletArgument, WalletName, extractChainId, keyType } from '../Wallet';
-import { fromBase64, fromBech32, toHex, fromHex, toBase64 } from '@cosmjs/encoding';
+import { type AbstractWallet, type Account, type WalletArgument, WalletName, extractChainId, keyType } from '../Wallet';
+import { fromBase64, fromHex, toBase64 } from '@cosmjs/encoding';
 import {
     Registry,
-    encodePubkey,
     makeAuthInfoBytes,
 } from '@cosmjs/proto-signing';
-import { Transaction } from '../../utils/type';
+import type { Transaction } from '../../utils/type';
 import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
 import { hashMessage } from '@ethersproject/hash';
 import { computePublicKey, recoverPublicKey } from '@ethersproject/signing-key';
 import { ethToEthermint, ethermintToEth } from '../../utils/format';
 import { AminoTypes, createDefaultAminoConverters } from "@cosmjs/stargate"
-import { Chain, createTxRawEIP712, signatureToWeb3Extension } from "@tharsis/transactions";
+import type { Chain} from "@tharsis/transactions";
 import { createEIP712, generateFee, generateMessageWithMultipleTransactions, generateTypes } from "@tharsis/eip712";
 import { defaultMessageAdapter } from '../EthermintMessageAdapter';
 import { Any } from "cosmjs-types/google/protobuf/any";
@@ -25,6 +24,7 @@ export class MetamaskWallet implements AbstractWallet {
     aminoTypes = new AminoTypes(createDefaultAminoConverters())
 
     constructor(arg: WalletArgument, registry: Registry) {
+        this.name = WalletName.Metamask
         this.chainId = arg.chainId || 'cosmoshub';
         this.registry = registry;
         this.prefix = arg.prefix || 'evmos'
@@ -56,7 +56,7 @@ export class MetamaskWallet implements AbstractWallet {
         const pk = toBase64(fromHex(hexPk.replace('0x', '')));
 
         console.log(accounts)
-        const connected = accounts.map((address) => ({
+        const connected = accounts.map((address: string) => ({
             address: ethToEthermint(address, this.prefix),
             algo: 'secp256k1',
             pubkeyBase64: pk,
@@ -77,6 +77,9 @@ export class MetamaskWallet implements AbstractWallet {
     }
 
     async supportCoinType(coinType?: string): Promise<boolean> {
+        if(coinType) {
+            //
+        }
         // Here, you can check if Metamask supports a specific type of cryptocurrency.
         return true;
     }

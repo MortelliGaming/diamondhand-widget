@@ -1,13 +1,13 @@
 import { fromBase64, fromBech32, toBase64, toHex } from "@cosmjs/encoding";
-import { OfflineSigner, Registry, TxBodyEncodeObject, encodePubkey, makeAuthInfoBytes, makeSignDoc } from "@cosmjs/proto-signing"
-import { AbstractWallet, Account, WalletArgument, WalletName, keyType } from "../Wallet"
-import { Transaction } from "../../utils/type"
+import { type OfflineSigner, Registry, type TxBodyEncodeObject, makeAuthInfoBytes, makeSignDoc } from '@cosmjs/proto-signing';
+import { type AbstractWallet, type Account, type WalletArgument, WalletName, keyType } from "../Wallet"
+import type { Transaction } from "../../utils/type"
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { Any } from "cosmjs-types/google/protobuf/any";
 import { PubKey } from 'cosmjs-types/cosmos/crypto/secp256k1/keys'
 import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 import { AminoTypes, createDefaultAminoConverters } from "@cosmjs/stargate";
-import { encodeSecp256k1Pubkey, makeSignDoc as makeSignDocAmino } from "@cosmjs/amino";
+import { makeSignDoc as makeSignDocAmino, type AminoMsg } from '@cosmjs/amino';
 import { createWasmAminoConverters } from "@cosmjs/cosmwasm-stargate";
 import { ethermintToEth } from "../../utils/format";
 
@@ -16,10 +16,12 @@ export class LeapWallet implements AbstractWallet {
     chainId: string
     registry: Registry
     conf: WalletArgument
-    signer: OfflineSigner
+    signer: OfflineSigner|null
     aminoTypes = new AminoTypes( {...createDefaultAminoConverters(), ...createWasmAminoConverters()})
     constructor(arg: WalletArgument, registry: Registry) {
         this.chainId = arg.chainId || "cosmoshub"
+        this.name = WalletName.Leap
+        this.signer = null
         // @ts-ignore
         if (!window.getOfflineSigner || !window.leap) {
             throw new Error('Please install Leap extension')
@@ -34,17 +36,20 @@ export class LeapWallet implements AbstractWallet {
 
         // @ts-ignore
         this.signer = await window.leap.getOfflineSigner(this.chainId);
-        const signerAccounts = await this.signer.getAccounts();
-        return signerAccounts.map(account => {
+        const signerAccounts = await this.signer?.getAccounts();
+        return signerAccounts?.map(account => {
             return {
                 address: account.address,
                 pubkeyBase64: toBase64(account.pubkey),
                 evmAddress: ethermintToEth(account.address),
                 algo: account.algo
             } as Account
-        });
+        }) || [];
     }
     supportCoinType(coinType?: string | undefined): Promise<boolean> {
+        if(coinType) {
+            // 
+        }
         return Promise.resolve(true);
     }
     isEthermint() {
@@ -89,7 +94,7 @@ export class LeapWallet implements AbstractWallet {
         // @ts-ignore
         // const offlineSigner = await window.leap.getOfflineSignerAuto(this.chainId);
         // console.log(offlineSigner)
-        const { signature, signed } = await this.signer.signDirect(transaction.signerAddress, signDoc);;
+        const { signature, signed } = await this.signer.signDirect(transaction.signerAddress, signDoc);
         return TxRaw.fromPartial({
             bodyBytes: signed.bodyBytes,
             authInfoBytes: signed.authInfoBytes,
@@ -122,7 +127,7 @@ export class LeapWallet implements AbstractWallet {
         // console.log(signature, 'signature', signed)
 
         const signedTxBody = {
-            messages: signed.msgs.map((msg) => this.aminoTypes.fromAmino(msg)),
+            messages: signed.msgs.map((msg: AminoMsg) => this.aminoTypes.fromAmino(msg)),
             memo: signed.memo,
         };
         const signedTxBodyEncodeObject: TxBodyEncodeObject = {

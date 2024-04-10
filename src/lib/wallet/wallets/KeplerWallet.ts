@@ -1,15 +1,15 @@
 import { fromBase64, fromBech32, toHex, toBase64 } from '@cosmjs/encoding';
-import { Registry, TxBodyEncodeObject, encodePubkey, makeAuthInfoBytes, makeSignDoc } from "@cosmjs/proto-signing"
-import { AbstractWallet, Account, WalletArgument, WalletName, keyType } from "../Wallet"
-import { Transaction } from "../../utils/type"
+import { Registry, type TxBodyEncodeObject, makeAuthInfoBytes, makeSignDoc } from "@cosmjs/proto-signing"
+import { type AbstractWallet, type Account, type WalletArgument, WalletName, keyType } from "../Wallet"
+import type { Transaction } from "../../utils/type"
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { Any } from "cosmjs-types/google/protobuf/any";
 import { PubKey } from 'cosmjs-types/cosmos/crypto/secp256k1/keys'
 import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 import { AminoTypes, createDefaultAminoConverters } from "@cosmjs/stargate";
-import { encodeSecp256k1Pubkey, makeSignDoc as makeSignDocAmino } from "@cosmjs/amino";
+import { makeSignDoc as makeSignDocAmino, type AminoMsg } from "@cosmjs/amino";
 import { createWasmAminoConverters } from "@cosmjs/cosmwasm-stargate";
-import { ethToEthermint, ethermintToEth } from '../../utils/format';
+import { ethermintToEth } from '../../utils/format';
 
 export class KeplerWallet implements AbstractWallet {
     name: WalletName.Keplr
@@ -18,6 +18,7 @@ export class KeplerWallet implements AbstractWallet {
     conf: WalletArgument
     aminoTypes = new AminoTypes( {...createDefaultAminoConverters(), ...createWasmAminoConverters()})
     constructor(arg: WalletArgument, registry: Registry) {
+        this.name = WalletName.Keplr
         this.chainId = arg.chainId || "cosmoshub"
         // @ts-ignore
         if (!window.getOfflineSigner || !window.keplr) {
@@ -34,7 +35,7 @@ export class KeplerWallet implements AbstractWallet {
         // @ts-ignore
         const offlineSigner = window.getOfflineSigner(this.chainId)
         const signerAccounts = await offlineSigner.getAccounts();
-        return signerAccounts.map(account => {
+        return signerAccounts.map((account: { address: string, pubkey: Uint8Array, algo: string }) => {
             return {
                 address: account.address,
                 pubkeyBase64: toBase64(account.pubkey),
@@ -44,6 +45,9 @@ export class KeplerWallet implements AbstractWallet {
         });
     }
     supportCoinType(coinType?: string | undefined): Promise<boolean> {
+        if(coinType) {
+            // 
+        }
         return Promise.resolve(true);
     }
     isEthermint() {
@@ -122,7 +126,7 @@ export class KeplerWallet implements AbstractWallet {
         const { signature, signed } = await offlineSigner.signAmino(tx.signerAddress, signDoc);
 
         const signedTxBody = {
-            messages: signed.msgs.map((msg) => this.aminoTypes.fromAmino(msg)),
+            messages: signed.msgs.map((msg: AminoMsg) => this.aminoTypes.fromAmino(msg)),
             memo: signed.memo,
         };
         const signedTxBodyEncodeObject: TxBodyEncodeObject = {
