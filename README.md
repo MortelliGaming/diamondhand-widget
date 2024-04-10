@@ -129,11 +129,9 @@ app.use(DiamondhandWidgetPlugin)
 ```
 <script setup lang="ts">
 import type { TxDialogParams } from 'dh-widget/src/lib/utils/type';
+import DhTxDialog from 'dh-widget'
 
-const dhTxDialog = ref({
-    show: function (_txType: string, params?: TxDialogParams) { },
-    hide: function () { },
-});
+const dhTxDialog = ref<InstanceType<typeof DhTxDialog>>();
 
 </script>
 

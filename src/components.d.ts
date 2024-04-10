@@ -23,7 +23,7 @@ declare module 'vue' {
     Send: typeof import('./components/TxDialog/messages/Send.vue')['default']
     StoreCode: typeof import('./components/TxDialog/wasm/StoreCode.vue')['default']
     Transfer: typeof import('./components/TxDialog/messages/Transfer.vue')['default']
-    TxDialog: typeof import('./components/TxDialog/index.vue')['default']
+    TxDialog: typeof import('./components/TxDialog/TxDialog.vue')['default']
     TxPrepareDialog: typeof import('./components/TxDialog/TxPrepareDialog.vue')['default']
     TxProgressDialog: typeof import('./components/TxDialog/TxProgressDialog.vue')['default']
     Unbond: typeof import('./components/TxDialog/messages/Unbond.vue')['default']

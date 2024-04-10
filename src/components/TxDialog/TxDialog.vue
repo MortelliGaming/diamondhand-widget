@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { ref, PropType, Ref } from 'vue';
+import { ref, type PropType, type Ref } from 'vue';
 
 import TxProgressDialog from './TxProgressDialog.vue';
 import TxPrepareDialog from './TxPrepareDialog.vue';
 
-import { BlockchainConfigSimple, TxDialogParams } from '../../lib/utils/type';
+import type { BlockchainConfigSimple, TxDialogParams } from '../../lib/utils/type';
 import { useBlockchainStore } from '../../stores/blockchain';
 import { useTransactionStore } from '../../stores/transaction';
 
 // evm messages
-
 
 // import ChainRegistryClient from '@ping-pub/chain-registry-client';
 import { storeToRefs } from 'pinia';
@@ -36,11 +35,11 @@ const dialogState = ref(DialogState.DIALOG_STATE_PREPARE)
 
 const txType = ref('send')
 const txDialogParams: Ref<TxDialogParams|undefined> = ref(undefined)
-const txPrepareDialog = ref({
-    initData: () => {}
-})
+const txPrepareDialog = ref<InstanceType<typeof TxPrepareDialog>>();
+    
 const visible = ref(false)
-const emit = defineEmits(['submitted', 'confirmed', 'error', 'close']);
+
+const emit = defineEmits(['submitted', 'confirmed', 'error']);
 
 function show(_txType: string, params?: TxDialogParams) {
     skipGasEstimation.value = false
@@ -100,7 +99,7 @@ selectedBlockchain.value = props.blockchainConfig
             <tx-progress-dialog
                 v-if="dialogState != DialogState.DIALOG_STATE_PREPARE"
                 @retry="() => { dialogState = DialogState.DIALOG_STATE_PREPARE }"
-                @close="hide()"
+                @close="hide"
             />
         </v-overlay>
     </div>

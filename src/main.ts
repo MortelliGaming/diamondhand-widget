@@ -6,16 +6,7 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
-// Composables
-import { createVuetify } from 'vuetify'
-// import { components, directives } from 'vuetify/dist/vuetify.js'
-
-import components from 'vuetify/dist/vuetify.js'
-import directives from 'vuetify/dist/vuetify.js'
-// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-
 import { createI18n } from 'vue-i18n'
-import { messages } from './lib/i18n'
 const i18n = createI18n({
     locale: navigator.language.substring(0,2), // set locale
     fallbackLocale: 'en', // set fallback locale

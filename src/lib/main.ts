@@ -16,7 +16,7 @@ export type {
 
 // Components
 import DhConnectWallet from '../components/ConnectWallet/ConnectWallet.vue'
-import DhTxDialog from '../components/TxDialog/index.vue'
+import DhTxDialog from '../components/TxDialog/TxDialog.vue'
 
 // Stores
 import { useWalletStore } from '../stores/wallet'

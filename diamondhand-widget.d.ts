@@ -23,4 +23,4 @@ export function useTransactionStore(): typeof import('./src/stores/transaction')
 
 // Components
 export const DhConnectWallet: typeof import('./src/components/ConnectWallet/ConnectWallet.vue')['default']
-export const DhTxDialog: typeof import('./src/components/TxDialog/index.vue')['default']
+export const DhTxDialog: typeof import('./src/components/TxDialog/TxDialog.vue')['default']

@@ -5,7 +5,7 @@ import {
     getLatestBlock,
     getStakingParam,
 } from '../../lib/utils/http';
-import { BroadcastMode, TxDialogParams } from '../../lib/utils/type';
+import { BroadcastMode, type TxDialogParams } from '../../lib/utils/type';
 
 import { useWalletStore } from '../../stores/wallet';
 import { useBlockchainStore } from '../../stores/blockchain';

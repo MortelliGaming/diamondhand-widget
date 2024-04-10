@@ -1,26 +1,11 @@
 
-<template>
-  <v-app>
-    <v-main>
-      <dh-connect-wallet
-        @connect="handleWalletConnected"
-        :blockchain-config="bConfig"
-        />
-      <dh-tx-dialog
-        ref="dhTxDialog"
-        :blockchain-config="bConfig"
-        :type="'deposit'"/>
-    </v-main>
-  </v-app>
-</template>
-
 <script lang="ts" setup>
 import components from 'vuetify/dist/vuetify.js' //For having types in all files while dev
 import DhConnectWallet from './components/ConnectWallet/ConnectWallet.vue';
-import DhTxDialog from './components/TxDialog/index.vue';
+import DhTxDialog from './components/TxDialog/TxDialog.vue';
 
 import { Account } from './lib/wallet/Wallet';
-import { BlockchainConfigSimple, TxDialogParams } from './lib/utils/type';
+import { BlockchainConfigSimple, type TxDialogParams } from './lib/utils/type';
 import { Ref, ref } from 'vue';
 
 const bConfig: Ref<BlockchainConfigSimple> = ref({
@@ -65,13 +50,11 @@ const bConfig: Ref<BlockchainConfigSimple> = ref({
       "isStakingAsset": false,
   }]
 })
-const dhTxDialog = ref({
-  show: function (txType: string, params?: TxDialogParams) { },
-  hide: function () { },
-});
+
+const dhTxDialog = ref<InstanceType<typeof DhTxDialog>>();
 
 function handleWalletConnected(wallet: Account) {
-  dhTxDialog.value.show('withdraw_commission', {
+  dhTxDialog.value?.show('withdraw_commission', {
     fees: {
       amount: '2000',
       denom: 'mpx',
@@ -84,10 +67,31 @@ function handleWalletConnected(wallet: Account) {
     sourceValidator: 'mxvaloper1dr8v4vkuex4umggv7mxlxh5s6h38pkrpwvctjx',
     destinationValidator: 'mxvaloper1dr8v4vkuex4umggv7mxlxh5s6h38pkrpwvctjx',
     option: '1'
-  })
+  } as TxDialogParams)
 }
 
 setTimeout(() => {
-  dhTxDialog.value.show('deposit')
+  dhTxDialog.value?.show('deposit')
 }, 100)
 </script>
+
+<template>
+  <v-app>
+    <v-main>
+      <dh-connect-wallet
+        @connect="handleWalletConnected"
+        @disconnect="() => {}"
+        @bech32-address="(address) => { console.log(address)}"
+        @evm-address="(address) => { console.log(address) }"
+        :blockchain-config="bConfig"
+        />
+      <dh-tx-dialog
+        ref="dhTxDialog"
+        @submitted="(txHash: string) => { console.log('submitted ' + txHash )}"
+        @confirmed="(txHash: string) => { console.log('confirmed ' + txHash )}"
+        @error="(error: string) => { console.log('error ' + error )}"
+        :blockchain-config="bConfig"
+        :type="'deposit' "/>
+    </v-main>
+  </v-app>
+</template>./components/TxDialog/TxDialog.vue

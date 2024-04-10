@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, ComputedRef } from 'vue';
+import { computed, ref, type ComputedRef } from 'vue';
 import { getActiveValidators, getDelegateRewards } from '../../../lib/utils/http';
 
 import { useWalletStore } from '../../../stores/wallet';
