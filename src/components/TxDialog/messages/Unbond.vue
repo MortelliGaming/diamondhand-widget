@@ -192,4 +192,4 @@ defineExpose({msgs, isValid, initial})
             </v-select>
         </v-col>
     </v-row>
-</template>../../../lib/stores/wallet../../../lib/stores/blockchain
+</template>
