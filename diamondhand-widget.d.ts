@@ -1,6 +1,5 @@
 
 // Import Vue types
-import type { App } from 'vue'
 export type { 
     BlockchainConfigSimple,
     TxDialogParams,
