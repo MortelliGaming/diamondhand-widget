@@ -32,13 +32,24 @@ export async function getAccount(endpoint: string, address: string) {
     const url = `${endpoint}/cosmos/auth/v1beta1/accounts/${address}`
     try{
         const res = await get(url)
+        const account = {
+            account_number: 0,
+            sequence: 0,
+        }
+        if(res.account?.base_vesting_account?.base_account) {
+            account.account_number = res.account.base_vesting_account.base_account.account_number
+            account.sequence = res.account.base_vesting_account.base_account.sequence
+        }
+        else if(res.account?.base_account) {
+            account.account_number = res.account.base_account.account_number
+            account.sequence = res.account.base_account.sequence
+        }
+        else if(res.account) {
+            account.account_number = res.account.account_number
+            account.sequence = res.account.sequence
+        }
         return {
-            account: {
-                // account_number: findField(res, "account_number"),
-                account_number: res.account.base_account.account_number,
-                // sequence: findField(res, "sequence")
-                sequence: res.account.base_account.sequence
-            }
+            account
         }      
     }catch(err) {
         throw new Error(err as any)

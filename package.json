@@ -1,5 +1,5 @@
 {
-  "name": "dh-widget",
+  "name": "diamondhand-widget",
   "version": "0.0.0",
   "main": "dist/diamondhand-widget.mjs",
   "types": "diamondhand-widget.d.ts",

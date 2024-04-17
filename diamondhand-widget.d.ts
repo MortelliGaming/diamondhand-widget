@@ -13,7 +13,7 @@ export type {
 } from './utils/type'
 
 // Plugin
-declare const DiamondhandWidgetPlugin: (app: App) => App
+declare const DiamondhandWidgetPlugin: FunctionPlugin<[]>
 export { DiamondhandWidgetPlugin }
 
 // Stores
