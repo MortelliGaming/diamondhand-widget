@@ -1,6 +1,6 @@
 {
   "name": "dh-widget",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "dist/diamondhand-widget.mjs",
   "types": "diamondhand-widget.d.ts",
   "scripts": {

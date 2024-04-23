@@ -12,7 +12,7 @@ import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
 import { fromBech32, toBech32 } from '@cosmjs/encoding';
-import type { Validator } from '@/types';
+import type { Validator } from "cosmjs-types/cosmos/staking/v1beta1/staking"
 
 const { t } = useI18n({
     messages
