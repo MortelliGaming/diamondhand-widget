@@ -54,7 +54,7 @@ const bConfig: Ref<BlockchainConfigSimple> = ref({
 const dhTxDialog = ref<InstanceType<typeof DhTxDialog>>();
 
 function handleWalletConnected(wallet: Account) {
-  dhTxDialog.value?.show('withdraw_commission', {
+  dhTxDialog.value?.show('delegate', {
     fees: {
       amount: '2000',
       denom: 'mpx',

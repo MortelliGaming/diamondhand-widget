@@ -1,3 +1,4 @@
+import { FunctionPlugin } from 'vue'
 
 // Import Vue types
 export type { 
@@ -9,7 +10,7 @@ export type {
     SendParams,
     UnbondParams,
     VoteParams,
-} from './utils/type'
+} from './src/lib/utils/type'
 
 // Plugin
 declare const DiamondhandWidgetPlugin: FunctionPlugin<[]>
