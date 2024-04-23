@@ -1,5 +1,3 @@
-import { Plugin } from 'vue'
-
 // Import Vue types
 export type { 
     BlockchainConfigSimple,
@@ -13,7 +11,7 @@ export type {
 } from './src/lib/utils/type'
 
 // Plugin
-declare const DiamondhandWidgetPlugin: Plugin<[]>
+declare const DiamondhandWidgetPlugin: (app: App<any>) => any
 export { DiamondhandWidgetPlugin }
 
 // Stores
