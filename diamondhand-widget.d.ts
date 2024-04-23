@@ -1,4 +1,4 @@
-import { FunctionPlugin } from 'vue'
+import { Plugin } from 'vue'
 
 // Import Vue types
 export type { 
@@ -13,7 +13,7 @@ export type {
 } from './src/lib/utils/type'
 
 // Plugin
-declare const DiamondhandWidgetPlugin: FunctionPlugin<[]>
+declare const DiamondhandWidgetPlugin: Plugin<[]>
 export { DiamondhandWidgetPlugin }
 
 // Stores
