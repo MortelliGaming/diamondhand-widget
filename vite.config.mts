@@ -17,8 +17,6 @@ import nodePolyfills from 'rollup-plugin-polyfill-node';
 import inject from '@rollup/plugin-inject';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 
-import dts from 'vite-plugin-dts'
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -119,8 +117,13 @@ export default defineConfig({
             nodePolyfills(),
         ],
         output: {
-          inlineDynamicImports: true,
-          format: 'module'
+          inlineDynamicImports: false,
+          format: 'module',
+          manualChunks(id) {
+              if (id.includes('node_modules') && !id.includes('buffer')  && !id.includes('process') && !id.includes('cosmjs')) {
+                  return id.toString().split('node_modules/')[1].split('/')[0].toString();
+              }
+          }
         },
     },
   },
