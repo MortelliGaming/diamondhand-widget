@@ -60,7 +60,7 @@ app.use(vuetify)
 
 ```
 
-import { DiamondhandWidgetPlugin } from 'dh-widget'
+import { DiamondhandWidgetPlugin } from 'diamondhand-widget'
 
 // do this after i18n and vuetify
 app.use(DiamondhandWidgetPlugin)
@@ -128,8 +128,8 @@ app.use(DiamondhandWidgetPlugin)
 
 ```
 <script setup lang="ts">
-import type { TxDialogParams } from 'dh-widget/src/lib/utils/type';
-import DhTxDialog from 'dh-widget'
+import type { TxDialogParams } from 'diamondhand-widget/src/lib/utils/type';
+import DhTxDialog from 'diamondhand-widget'
 
 const dhTxDialog = ref<InstanceType<typeof DhTxDialog>>();
 
