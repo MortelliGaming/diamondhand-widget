@@ -118,12 +118,7 @@ export default defineConfig({
         ],
         output: {
           inlineDynamicImports: false,
-          format: 'module',
-          manualChunks(id) {
-              if (id.includes('node_modules') && !id.includes('buffer')  && !id.includes('process') && !id.includes('cosmjs') && !id.includes('confio')) {
-                  return id.toString().split('node_modules/')[1].split('/')[0].toString();
-              }
-          }
+          format: 'module'
         },
     },
   },
