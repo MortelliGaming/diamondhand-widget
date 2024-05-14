@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChainInfo } from '@keplr-wallet/types'
 import ConnectWalletMenu from './ConnectWalletMenu.vue'
-import { type PropType, ref, watch } from 'vue';
+import { type PropType, ref, watch, computed } from 'vue';
 import { useBlockchainStore } from '../../lib/stores/blockchain';
 import { storeToRefs } from 'pinia';
 
@@ -19,11 +19,12 @@ const connected = ref(null)
 const connectMenu = ref({
     connectWallet: () => {}
 })
-setTimeout(() => {
-})
 
+const _props = computed(() => {
+    return _props
+})
 selectedBlockchain.value = props.blockchainConfig
-watch(props, () => {
+watch(_props, () => {
     if(props.blockchainConfig) {
         selectedBlockchain.value = props.blockchainConfig;
         connectMenu.value?.connectWallet();
