@@ -24,8 +24,10 @@ setTimeout(() => {
 
 selectedBlockchain.value = props.blockchainConfig
 watch(props, () => {
-    selectedBlockchain.value = props.blockchainConfig;
-    connectMenu.value?.connectWallet();
+    if(props.blockchainConfig) {
+        selectedBlockchain.value = props.blockchainConfig;
+        connectMenu.value?.connectWallet();
+    }
 })
 
 </script>

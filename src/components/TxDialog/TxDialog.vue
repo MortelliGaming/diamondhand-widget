@@ -84,7 +84,6 @@ watch(isSendingTx, async (newValue, oldValue) => {
     }
   }
 })
-
 selectedBlockchain.value = props.blockchainConfig
 </script>
 <template>

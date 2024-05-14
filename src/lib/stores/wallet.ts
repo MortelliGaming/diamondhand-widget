@@ -47,7 +47,7 @@ export const useWalletStore = defineStore('dh-wallet', () => {
     
     const converter = new TokenUnitConverter(Object.assign({},coinMetadatas.value))
     // convert to display denom
-    const balances = balancesResult.balances.map(b => {
+    const balances = balancesResult.balances?.map(b => {
       try {
         return converter.baseToDisplay(b)
       } catch {
