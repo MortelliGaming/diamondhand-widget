@@ -94,14 +94,12 @@ function toggleOverlay() {
 }
 function connectWallet() {
     connectedWallet.value = null
-    console.log(selectedBlockchain.value?.chainId)
     connect(selectedWallet.value ?? WalletName.Keplr, selectedBlockchain.value?.chainId ?? '', coinType2HDPath(parseInt(selectedBlockchain.value?.bip44?.coinType.toString() || '118')) ?? '', selectedBlockchain.value?.bech32Config.bech32PrefixAccAddr ?? '')
     .then(async () => {
         if(connectedWallet.value == null) {
             await alert(JSON.stringify(error.value, null, 2));
         } else {
             overlayOpen.value = false;
-            console.log('connected wallet', JSON.stringify(connectedWallet.value, null, 2))
             emit('connect', connectedWallet.value)
         }
     })
