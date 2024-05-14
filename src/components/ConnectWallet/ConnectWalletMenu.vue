@@ -95,7 +95,7 @@ function toggleOverlay() {
 function connectWallet() {
     connectedWallet.value = null
     console.log(selectedBlockchain.value?.chainId)
-    connect(selectedWallet.value ?? WalletName.Keplr, selectedBlockchain.value?.chainId ?? '', coinType2HDPath(parseInt(selectedBlockchain.value?.coin_type || '118')) ?? '', selectedBlockchain.value?.addr_prefix ?? '')
+    connect(selectedWallet.value ?? WalletName.Keplr, selectedBlockchain.value?.chainId ?? '', coinType2HDPath(parseInt(selectedBlockchain.value?.bip44?.coinType.toString() || '118')) ?? '', selectedBlockchain.value?.bech32Config.bech32PrefixAccAddr ?? '')
     .then(async () => {
         if(connectedWallet.value == null) {
             await alert(JSON.stringify(error.value, null, 2));

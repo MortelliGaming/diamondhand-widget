@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import { ChainInfo } from '@keplr-wallet/types'
 import ConnectWalletMenu from './ConnectWalletMenu.vue'
 import { type PropType, ref, watch } from 'vue';
-import type { BlockchainConfigSimple } from '../../lib/utils/type';
 import { useBlockchainStore } from '../../lib/stores/blockchain';
 import { storeToRefs } from 'pinia';
 
 const props = defineProps({
     blockchainConfig: {
-        type: Object as PropType<BlockchainConfigSimple>,
+        type: Object as PropType<ChainInfo>,
         required: true
     }
 });

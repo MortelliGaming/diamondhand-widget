@@ -4,7 +4,7 @@ import { ref, type PropType, type Ref } from 'vue';
 import TxProgressDialog from './TxProgressDialog.vue';
 import TxPrepareDialog from './TxPrepareDialog.vue';
 
-import type { BlockchainConfigSimple, DhDialogMessageType, TxDialogParams } from '../../lib/utils/type';
+import type { DhDialogMessageType, TxDialogParams } from '../../lib/utils/type';
 import { useBlockchainStore } from '../../lib/stores/blockchain';
 import { useTransactionStore } from '../../lib/stores/transaction';
 
@@ -13,6 +13,7 @@ import { useTransactionStore } from '../../lib/stores/transaction';
 // import ChainRegistryClient from '@ping-pub/chain-registry-client';
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
+import { ChainInfo } from '@keplr-wallet/types';
 
 enum DialogState {
     DIALOG_STATE_PREPARE,
@@ -26,7 +27,7 @@ const { selectedBlockchain } = storeToRefs(useBlockchainStore())
 
 const props = defineProps({
     blockchainConfig: {
-        type: Object as PropType<BlockchainConfigSimple>,
+        type: Object as PropType<ChainInfo>,
         required: true
     },
 });

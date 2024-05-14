@@ -104,7 +104,7 @@ function initial() {
         amountDenom.value = props.params.denom
     }
     if(amountDenom.value == '') {
-        getStakingParam(selectedBlockchain.value?.api[0] ||'').then((x) => {
+        getStakingParam(selectedBlockchain.value?.rest ||'').then((x) => {
             amountDenom.value = x.params?.bond_denom;
         });
     }

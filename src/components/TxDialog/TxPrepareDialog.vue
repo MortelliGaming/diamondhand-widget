@@ -110,7 +110,7 @@ const chainId = ref('cosmoshub-4');
 const broadcast = ref(BroadcastMode.SYNC);
 
 async function initData() {
-    if (selectedBlockchain.value?.api[0] || '' && connectedWallet.value?.cosmosAddress) {
+    if (selectedBlockchain.value?.rest || '' && connectedWallet.value?.cosmosAddress) {
 
         if(props.params?.fees) {
             feeAmount.value = parseInt(props.params.fees.amount)
@@ -119,7 +119,7 @@ async function initData() {
         }
         memo.value = ''
         try {
-            getLatestBlock(selectedBlockchain.value?.api[0] || '').then((x) => {
+            getLatestBlock(selectedBlockchain.value?.rest || '').then((x) => {
                 chainId.value = x.block.header.chain_id;
             });
 
@@ -127,7 +127,7 @@ async function initData() {
             if (msgBox.value && msgBox.value.initial) msgBox.value.initial();
             
             // load fee denom
-            getStakingParam(selectedBlockchain.value?.api[0] || '').then((res) => {
+            getStakingParam(selectedBlockchain.value?.rest || '').then((res) => {
                 feeDenom.value = res?.params?.bond_denom;
             })
         } catch (err) {
@@ -270,11 +270,6 @@ defineExpose({
         </v-card>
     </div>
 </template>
-<script lang="ts" scoped>
-export default {
-    name: 'TxDialog',
-};
-</script>
 <style lang="scss">
 .tx-dialog-card {
     min-width: 400px;

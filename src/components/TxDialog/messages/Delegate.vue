@@ -78,7 +78,7 @@ const available = computed(() => {
 });
 
 function loadInactiveValidators() {
-    getInactiveValidators(selectedBlockchain.value?.api[0] || '').then((x) => {
+    getInactiveValidators(selectedBlockchain.value?.rest || '').then((x) => {
         inactiveValidators.value = x.validators;
     });
 }
@@ -127,11 +127,11 @@ function initial() {
     if(props.params?.validator) {
         validator.value = props.params.validator;
     }
-    getStakingParam(selectedBlockchain.value?.api[0] || '').then((x) => {
+    getStakingParam(selectedBlockchain.value?.rest || '').then((x) => {
         stakingDenom.value = x.params.bond_denom;
         unbondingTime.value = x.params.unbonding_time;
     });
-    getActiveValidators(selectedBlockchain.value?.api[0] || '').then((x) => {
+    getActiveValidators(selectedBlockchain.value?.rest || '').then((x) => {
         activeValidators.value = x.validators;
         if (!validator.value) {
             validator.value = x.validators.find(

@@ -1,6 +1,6 @@
 {
   "name": "diamondhand-widget",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/diamondhand-widget.mjs",
   "types": "diamondhand-widget.d.ts",
   "scripts": {
@@ -37,6 +37,7 @@
   "devDependencies": {
     "@babel/types": "^7.24.0",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@keplr-wallet/types": "^0.12.89",
     "@rollup/plugin-inject": "^5.0.5",
     "@types/node": "^20.11.25",
     "@vitejs/plugin-vue": "^5.0.4",
