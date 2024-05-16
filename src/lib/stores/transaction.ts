@@ -45,11 +45,12 @@ export const useTransactionStore = defineStore('dh-transaction', () => {
     }
     reset();
     isSendingTx.value = true;
-    const {connectedWallet} = storeToRefs(useWalletStore())
+    const { connectedWallet } = storeToRefs(useWalletStore())
     const { selectedBlockchain } = storeToRefs(useBlockchainStore())
     try {
       // request sequence and acc number
       const acc = await getAccount(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '');
+      console.log(connectedWallet.value?.cosmosAddress)
       const tx = {
           chainId: selectedBlockchain.value?.chainId || '',
           signerAddress: connectedWallet.value?.cosmosAddress ?? '',
@@ -77,6 +78,7 @@ export const useTransactionStore = defineStore('dh-transaction', () => {
       
       if(!skipGasEstimation.value) {
         let gasEstimationSuccess = false;
+        console.log(selectedBlockchain.value?.rest)
         await client.simulate(selectedBlockchain.value?.rest || '' , tx, broadcastMode).then(gas => {
           // update tx gas
           tx.fee.gas = (gas * 1.25).toFixed()

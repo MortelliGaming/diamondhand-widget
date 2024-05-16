@@ -77,7 +77,7 @@ const { t } = useI18n({
 })
 
 const { connect, disconnect } = useWalletStore()
-const { connectedWallet, walletList, error } = storeToRefs(useWalletStore());
+const { connectedWallet, walletList, error } = storeToRefs(useWalletStore())
 const { selectedBlockchain } = storeToRefs(useBlockchainStore())
 
 const selectedWallet: Ref<WalletName|null> = ref(null)
@@ -94,6 +94,7 @@ function toggleOverlay() {
 }
 function connectWallet() {
     connectedWallet.value = null
+    console.log(selectedBlockchain.value?.chainId)
     connect(selectedWallet.value ?? WalletName.Keplr, selectedBlockchain.value?.chainId ?? '', coinType2HDPath(parseInt(selectedBlockchain.value?.bip44?.coinType.toString() || '118')) ?? '', selectedBlockchain.value?.bech32Config.bech32PrefixAccAddr ?? '')
     .then(async () => {
         if(connectedWallet.value == null) {

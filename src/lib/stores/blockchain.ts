@@ -32,7 +32,7 @@ export const useBlockchainStore = defineStore('dh-blockchain', () => {
     })
   }
   function loadCoinMetadata() {
-    selectedBlockchain.value?.currencies?.map(a => {
+    selectedBlockchain.value?.currencies.map(a => {
       try {
         getCoinMetadata(endpoint.value, a.coinMinimalDenom).then(metadata => {
           if(metadata.metadata) {
@@ -52,11 +52,11 @@ export const useBlockchainStore = defineStore('dh-blockchain', () => {
           symbol: a.coinDenom,
           denom_units: [{
             denom: a.coinMinimalDenom,
-            exponent: a.coinDecimals,
+            exponent: 0,
             aliases: []
           },{
             denom: a.coinDenom,
-            exponent: 0,
+            exponent: parseInt(a.coinDecimals.toString()),
             aliases: []
           }]
         }

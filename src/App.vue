@@ -5,13 +5,13 @@ import DhConnectWallet from './components/ConnectWallet/ConnectWallet.vue';
 import DhTxDialog from './components/TxDialog/TxDialog.vue';
 
 import { Account } from './lib/wallet/Wallet';
-import { type TxDialogParams } from './lib/utils/type';
-import { ref } from 'vue';
+import { BlockchainConfigSimple, type TxDialogParams } from './lib/utils/type';
+import { Ref, ref } from 'vue';
 import { ChainInfo } from '@keplr-wallet/types';
 
-const crossfiKeplr: ChainInfo = {
-  "rpc": "https://crossfitestnetrpc.diamondhand.capital/",
-  "rest": "https://crossfitestnetapi.diamondhand.capital/",
+const crossfi: Ref<ChainInfo> = ref({
+  "rpc": "https://crossfitestnetrpc.diamondhand.capital",
+  "rest": "https://crossfitestnetapi.diamondhand.capital",
   "chainId": "crossfi-evm-testnet-1",
   "chainName": "CrossFi Testnet",
   "chainSymbolImageUrl": "https://media.licdn.com/dms/image/D4E0BAQEs0PUwKhAw9g/company-logo_200_200/0/1699597847512/crossfichain_logo?e=2147483647&v=beta&t=36793GMlIOqcltdR6gIdZhOpT8OpANC52XwQ4gewqmg",
@@ -86,7 +86,7 @@ const crossfiKeplr: ChainInfo = {
     }
   ],
   "features": ["eth-address-gen", "eth-key-sign", "ibc-transfer", "ibc-go", "cosmwasm"]
-}
+})
 
 const dhTxDialog = ref<InstanceType<typeof DhTxDialog>>();
 
@@ -120,15 +120,15 @@ setTimeout(() => {
         @disconnect="() => {}"
         @bech32-address="(address) => { console.log(address)}"
         @evm-address="(address) => { console.log(address) }"
-        :blockchain-config="crossfiKeplr"
+        :blockchain-config="crossfi"
         />
       <dh-tx-dialog
         ref="dhTxDialog"
         @submitted="(txHash: string) => { console.log('submitted ' + txHash )}"
         @confirmed="(txHash: string) => { console.log('confirmed ' + txHash )}"
         @error="(error: string) => { console.log('error ' + error )}"
-        :blockchain-config="crossfiKeplr"
-        :type="'delegate' "/>
+        :blockchain-config="crossfi"
+        :type="'deposit' "/>
     </v-main>
   </v-app>
 </template>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ChainInfo } from '@keplr-wallet/types'
 import ConnectWalletMenu from './ConnectWalletMenu.vue'
-import { type PropType, ref, watch } from 'vue';
+import { type PropType, ref } from 'vue';
 import { useBlockchainStore } from '../../lib/stores/blockchain';
 import { storeToRefs } from 'pinia';
+import { ChainInfo } from '@keplr-wallet/types';
 
 const props = defineProps({
     blockchainConfig: {
@@ -15,20 +16,14 @@ const props = defineProps({
 const emit = defineEmits(['connect', 'disconnect', 'bech32Address', 'evmAddress']);
 
 const { selectedBlockchain } = storeToRefs(useBlockchainStore())
-const connected = ref(null)
+
 const connectMenu = ref({
     connectWallet: () => {}
 })
 
 selectedBlockchain.value = props.blockchainConfig
-watch(props, () => {
-    try {
-        if(props.blockchainConfig) {
-            selectedBlockchain.value = props.blockchainConfig;
-            connectMenu.value?.connectWallet();
-        }
-    } catch { /** */}
-})
+
+connectMenu.value?.connectWallet();
 
 </script>
 <template>
@@ -40,7 +35,7 @@ watch(props, () => {
             @bech32Address="(event) => emit('bech32Address', event)"
             @evmAddress="(event) => emit('evmAddress', event)"
             theme="dark"
-            v-show="!((connected as any)?.cosmosAddress) || true">
+            v-show="true">
         </ConnectWalletMenu>
     </div>
 </template>

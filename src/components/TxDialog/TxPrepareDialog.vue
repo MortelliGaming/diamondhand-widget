@@ -274,6 +274,5 @@ defineExpose({
 .tx-dialog-card {
     min-width: 400px;
 }
-
 </style>
 ../../lib/stores/wallet../../lib/stores/blockchain../../lib/stores/transaction
