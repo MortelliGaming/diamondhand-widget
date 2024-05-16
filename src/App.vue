@@ -7,48 +7,85 @@ import DhTxDialog from './components/TxDialog/TxDialog.vue';
 import { Account } from './lib/wallet/Wallet';
 import { BlockchainConfigSimple, type TxDialogParams } from './lib/utils/type';
 import { Ref, ref } from 'vue';
+import { ChainInfo } from '@keplr-wallet/types';
 
-const bConfig: Ref<BlockchainConfigSimple> = ref({
-  "chain_name": "crossfi testnet",
-  "coingecko": "crossfi",
+const crossfi: Ref<ChainInfo> = ref({
+  "rpc": "https://crossfitestnetrpc.diamondhand.capital",
+  "rest": "https://crossfitestnetapi.diamondhand.capital",
   "chainId": "crossfi-evm-testnet-1",
-  "api": ["https://crossfi-testnet-api.itrocket.net:443", "https://crossfitestnetapi.diamondhand.capital"],
-  "rpc": ["https://crossfi-testnet-rpc.itrocket.net:443", "https://crossfitestnetrpc.diamondhand.capital"],
-  "jsonRpc": [],
-  "snapshot_provider": "",
-  "sdk_version": "0.46.1",
-  "coin_type": "60",
-  "min_tx_fee": "800",
-  "addr_prefix": "mx",
-  "logo": "/logos/crossfi.jpeg",
-  "theme_color": "#812cd6",
-  "keplr_features": ["eth-address-gen", "eth-key-sign", "ibc-transfer", "ibc-go"],
-  "has_evm_features": true,
-  "assets": [{
-      "base": "xfi",
-      "symbol": "XFI",
-      "exponent": "18",
-      "coingecko_id": "xfi", 
-      "logo": "/logos/xfi.jpeg",
-      "isFeeAsset": true,
-      "isStakingAsset": false,
-  },{
-      "base": "mpx",
-      "symbol": "MPX",
-      "exponent": "18",
-      "coingecko_id": "xfi_mpx", 
-      "logo": "/logos/xfi.jpeg",
-      "isFeeAsset": true,
-      "isStakingAsset": true,
-  },{
-      "base": "xft",
-      "symbol": "XFT",
-      "exponent": "18",
-      "coingecko_id": "xft", 
-      "logo": "/logos/xfi.jpeg",
-      "isFeeAsset": false,
-      "isStakingAsset": false,
-  }]
+  "chainName": "CrossFi Testnet",
+  "chainSymbolImageUrl": "https://media.licdn.com/dms/image/D4E0BAQEs0PUwKhAw9g/company-logo_200_200/0/1699597847512/crossfichain_logo?e=2147483647&v=beta&t=36793GMlIOqcltdR6gIdZhOpT8OpANC52XwQ4gewqmg",
+  "nodeProvider": {
+    "name": "CrossFi Foundation",
+    "website":"https://crossfi.org/",
+    "email": "info@crossfi.org"
+  },
+  "stakeCurrency": {
+    "coinDenom": "MPX",
+    "coinMinimalDenom": "mpx",
+    "coinDecimals": 18
+  },
+  "bip44": {
+    "coinType": 60
+  },
+  "bech32Config": {
+    "bech32PrefixAccAddr": "mx",
+    "bech32PrefixAccPub": "mxpub",
+    "bech32PrefixValAddr": "mxvaloper",
+    "bech32PrefixValPub": "mxvaloperpub",
+    "bech32PrefixConsAddr": "mxvalcons",
+    "bech32PrefixConsPub": "mxvalconspub"
+  },
+  "currencies": [
+    {
+      "coinDenom": "MPX",
+      "coinMinimalDenom": "mpx",
+      "coinDecimals": 18
+    },{
+      "coinDenom": "XFI",
+      "coinMinimalDenom": "xfi",
+      "coinDecimals": 18
+    },{
+      "coinDenom": "XFT",
+      "coinMinimalDenom": "xft",
+      "coinDecimals": 18
+    },{
+      "coinDenom": "eMPX",
+      "coinMinimalDenom": "empx",
+      "coinDecimals": 18
+    },{
+      "coinDenom": "exe",
+      "coinMinimalDenom": "EXE",
+      "coinDecimals": 18
+    },{
+      "coinDenom": "xUSD",
+      "coinMinimalDenom": "xusd",
+      "coinDecimals": 18
+    }
+  ],
+  "feeCurrencies": [
+    {
+      "coinDenom": "XFI",
+      "coinMinimalDenom": "xfi",
+      "coinDecimals": 18,
+      "gasPriceStep": {
+        "low": 10000000000,
+        "average": 15000000000,
+        "high": 20000000000
+      }
+    },
+    {
+      "coinDenom": "MPX",
+      "coinMinimalDenom": "mpx",
+      "coinDecimals": 18,
+      "gasPriceStep": {
+        "low": 10000000000,
+        "average": 15000000000,
+        "high": 20000000000
+      }
+    }
+  ],
+  "features": ["eth-address-gen", "eth-key-sign", "ibc-transfer", "ibc-go", "cosmwasm"]
 })
 
 const dhTxDialog = ref<InstanceType<typeof DhTxDialog>>();
@@ -83,14 +120,14 @@ setTimeout(() => {
         @disconnect="() => {}"
         @bech32-address="(address) => { console.log(address)}"
         @evm-address="(address) => { console.log(address) }"
-        :blockchain-config="bConfig"
+        :blockchain-config="crossfi"
         />
       <dh-tx-dialog
         ref="dhTxDialog"
         @submitted="(txHash: string) => { console.log('submitted ' + txHash )}"
         @confirmed="(txHash: string) => { console.log('confirmed ' + txHash )}"
         @error="(error: string) => { console.log('error ' + error )}"
-        :blockchain-config="bConfig"
+        :blockchain-config="crossfi"
         :type="'deposit' "/>
     </v-main>
   </v-app>

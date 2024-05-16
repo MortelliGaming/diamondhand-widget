@@ -24,10 +24,12 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 // import vuetify from './plugins/vuetify'
 
 const app = createApp(App)
 // app.use(vuetify)
+app.use(createPinia())
 app.use(i18n)
 registerPlugins(app)
 app.mount('#app')

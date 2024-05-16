@@ -1,3 +1,5 @@
+import type { App } from 'vue'
+
 // Import Vue types
 export type { 
     BlockchainConfigSimple,

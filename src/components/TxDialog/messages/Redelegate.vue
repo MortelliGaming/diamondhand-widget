@@ -83,7 +83,7 @@ const delegatedValidatorList = computed(() => {
     return delegatedValidators.value.filter(v => v != undefined).map(v => ({value: v!.operator_address, title: v!.description.moniker + ' (' + decimal2percent(v!.commission.commission_rates.rate) +'%)' + (v!.status !== 'BOND_STATUS_BONDED' ? (v!.status == 'BOND_STATUS_JAILED' ? ' [!! JAILED !!]' : ' [ INACTIVE ]' ) : '')}))
 })
 const delegatedValidators = computed(() => {
-    return delegations.value?.map(d => list.value.find(v => toBech32(selectedBlockchain.value?.addr_prefix + 'valoper' ||'', fromBech32(v.operator_address).data) == d.delegation.validator_address))
+    return delegations.value?.map(d => list.value.find(v => toBech32(selectedBlockchain.value?.bech32Config.bech32PrefixValAddr ||'', fromBech32(v.operator_address).data) == d.delegation.validator_address))
 })
 
 const available = computed(() => {
@@ -129,7 +129,7 @@ function setDenom(denom: string) {
 }
 
 function loadInactiveValidators() {
-    getInactiveValidators(selectedBlockchain.value?.api[0] || '').then((x) => {
+    getInactiveValidators(selectedBlockchain.value?.rest || '').then((x) => {
         inactiveValidators.value = x.validators;
     });
 }
@@ -148,7 +148,7 @@ async function initial() {
         amountDenom.value = props.params.denom;
     }
 
-    await getDelegationsByDelegator(selectedBlockchain.value?.api[0] || '', connectedWallet.value?.cosmosAddress || '').then(x => {
+    await getDelegationsByDelegator(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '').then(x => {
         delegations.value = x.delegation_responses
         if(delegations.value?.length > 0 && validator.value == '') {
             validator.value = delegations.value[0].delegation.validator_address
@@ -157,11 +157,11 @@ async function initial() {
         error.value = err
     })
 
-    await getStakingParam(selectedBlockchain.value?.api[0] || '').then((x) => {
+    await getStakingParam(selectedBlockchain.value?.rest || '').then((x) => {
         stakingDenom.value = x.params.bond_denom;
     });
 
-    await getActiveValidators(selectedBlockchain.value?.api[0] || '').then(x => {
+    await getActiveValidators(selectedBlockchain.value?.rest || '').then(x => {
         activeValidators.value = x.validators
         if(destinationValidator.value == '') {
             destinationValidator.value = x.validators.find((v: Validator) => v.description.identity === '32BEA58DE3D6EDB7')?.operator_address

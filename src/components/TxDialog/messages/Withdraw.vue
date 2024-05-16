@@ -51,7 +51,7 @@ function initial() {
     if(props.params) {
         // 
     }
-    getDelegateRewards(selectedBlockchain.value?.api[0] || '', connectedWallet.value?.cosmosAddress || '').then(x => {
+    getDelegateRewards(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '').then(x => {
         rewards.value = x.rewards
     })
 }

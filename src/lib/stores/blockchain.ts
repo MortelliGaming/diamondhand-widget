@@ -1,15 +1,16 @@
 import { defineStore } from 'pinia';
 
 import { type Ref, ref, watch, computed } from 'vue';
-import { type BlockchainConfigSimple, type CoinMetadata, type GovProposalMetadata, GovProposalStatus } from '../utils/type';
+import { type CoinMetadata, type GovProposalMetadata, GovProposalStatus } from '../utils/type';
 import { getCoinMetadata, getGovProposals } from '../utils/http';
+import { ChainInfo } from '@keplr-wallet/types';
 
 export const useBlockchainStore = defineStore('dh-blockchain', () => {
-  const selectedBlockchain: Ref<BlockchainConfigSimple|null> = ref(null)
+  const selectedBlockchain: Ref<ChainInfo|null> = ref(null)
   const coinMetadatas: Ref<{[denom: string]: CoinMetadata}> = ref({})
 
   const endpoint = computed(() => {
-    return selectedBlockchain.value?.api[0] || ''
+    return selectedBlockchain.value?.rest || ''
   })
 
   const depositProposals: Ref<GovProposalMetadata[]> = ref([])
@@ -31,31 +32,31 @@ export const useBlockchainStore = defineStore('dh-blockchain', () => {
     })
   }
   function loadCoinMetadata() {
-    selectedBlockchain.value?.assets.map(a => {
+    selectedBlockchain.value?.currencies.map(a => {
       try {
-        getCoinMetadata(endpoint.value, a.base).then(metadata => {
+        getCoinMetadata(endpoint.value, a.coinMinimalDenom).then(metadata => {
           if(metadata.metadata) {
-            coinMetadatas.value[a.base] = metadata.metadata
+            coinMetadatas.value[a.coinMinimalDenom] = metadata.metadata
           }
         })
       } catch(err: any) {
         // 
       }
       // manual add from config
-      if(!coinMetadatas.value[a.base]) {
-        coinMetadatas.value[a.base] = {
-          description: a.symbol,
-          base: a.base,
-          display: a.symbol,
-          name: a.symbol,
-          symbol: a.symbol,
+      if(!coinMetadatas.value[a.coinMinimalDenom]) {
+        coinMetadatas.value[a.coinMinimalDenom] = {
+          description: a.coinDenom,
+          base: a.coinMinimalDenom,
+          display: a.coinDenom,
+          name: a.coinDenom,
+          symbol: a.coinDenom,
           denom_units: [{
-            denom: a.base,
-            exponent: 1,
+            denom: a.coinMinimalDenom,
+            exponent: 0,
             aliases: []
           },{
-            denom: a.symbol,
-            exponent: parseInt(a.exponent),
+            denom: a.coinDenom,
+            exponent: parseInt(a.coinDecimals.toString()),
             aliases: []
           }]
         }

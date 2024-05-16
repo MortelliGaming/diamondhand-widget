@@ -1,18 +1,35 @@
+<template>
+    <div>
+        <v-overlay v-model="visible" class="align-center justify-center">
+            <tx-prepare-dialog
+                v-show="dialogState == DialogState.DIALOG_STATE_PREPARE"
+                ref="txPrepareDialog"
+                :type="txType"
+                :params="(txDialogParams as any)"
+                @close="hide"
+            />
+            <tx-progress-dialog
+                v-if="dialogState != DialogState.DIALOG_STATE_PREPARE"
+                @retry="() => { dialogState = DialogState.DIALOG_STATE_PREPARE }"
+                @close="hide"
+            />
+        </v-overlay>
+    </div>
+</template>
 <script setup lang="ts">
 import { ref, type PropType, type Ref } from 'vue';
 
 import TxProgressDialog from './TxProgressDialog.vue';
 import TxPrepareDialog from './TxPrepareDialog.vue';
 
-import type { BlockchainConfigSimple, DhDialogMessageType, TxDialogParams } from '../../lib/utils/type';
+import type { DhDialogMessageType, TxDialogParams } from '../../lib/utils/type';
 import { useBlockchainStore } from '../../lib/stores/blockchain';
 import { useTransactionStore } from '../../lib/stores/transaction';
 
 // evm messages
-
-// import ChainRegistryClient from '@ping-pub/chain-registry-client';
-import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
+import { ChainInfo } from '@keplr-wallet/types';
+import { storeToRefs } from 'pinia';
 
 enum DialogState {
     DIALOG_STATE_PREPARE,
@@ -26,8 +43,8 @@ const { selectedBlockchain } = storeToRefs(useBlockchainStore())
 
 const props = defineProps({
     blockchainConfig: {
-        type: Object as PropType<BlockchainConfigSimple>,
-        required: true
+        type: Object as PropType<ChainInfo>,
+        required: false
     },
 });
 
@@ -42,6 +59,9 @@ const visible = ref(false)
 const emit = defineEmits(['submitted', 'confirmed', 'error']);
 
 function show(txMessageType: DhDialogMessageType, dialogParams?: TxDialogParams) {
+    if(props.blockchainConfig) {
+        selectedBlockchain.value = props.blockchainConfig
+    }
     skipGasEstimation.value = false
     txError.value = ''
     txMsg.value = ''
@@ -54,7 +74,7 @@ function show(txMessageType: DhDialogMessageType, dialogParams?: TxDialogParams)
     // the ref is set a little bit later
     setTimeout(() => {
         txPrepareDialog.value?.initData();
-    })
+    }, 10)
 }
 function hide() {
     visible.value = false;
@@ -84,35 +104,9 @@ watch(isSendingTx, async (newValue, oldValue) => {
   }
 })
 
-selectedBlockchain.value = props.blockchainConfig
-</script>
-<template>
-    <div>
-        <v-overlay v-model="visible" class="align-center justify-center">
-            <tx-prepare-dialog
-                v-show="dialogState == DialogState.DIALOG_STATE_PREPARE"
-                ref="txPrepareDialog"
-                :type="txType"
-                :params="(txDialogParams as any)"
-                @close="hide"
-            />
-            <tx-progress-dialog
-                v-if="dialogState != DialogState.DIALOG_STATE_PREPARE"
-                @retry="() => { dialogState = DialogState.DIALOG_STATE_PREPARE }"
-                @close="hide"
-            />
-        </v-overlay>
-    </div>
-</template>
-<script lang="ts" scoped>
-export default {
-    name: 'TxDialog',
-};
 </script>
 <style lang="scss">
 .tx-dialog-card {
     min-width: 400px;
 }
-
 </style>
-../../lib/stores/blockchain../../lib/stores/transaction

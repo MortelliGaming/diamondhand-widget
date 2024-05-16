@@ -43,7 +43,7 @@ export const useWalletStore = defineStore('dh-wallet', () => {
 
   async function loadBalances() {
     const { selectedBlockchain, coinMetadatas } = storeToRefs(useBlockchainStore())
-    const balancesResult = await getBalance(selectedBlockchain.value?.api[0] ?? '', connectedWallet.value?.cosmosAddress ?? '')
+    const balancesResult = await getBalance(selectedBlockchain.value?.rest ?? '', connectedWallet.value?.cosmosAddress ?? '')
     
     const converter = new TokenUnitConverter(Object.assign({},coinMetadatas.value))
     // convert to display denom

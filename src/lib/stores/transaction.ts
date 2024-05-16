@@ -45,11 +45,12 @@ export const useTransactionStore = defineStore('dh-transaction', () => {
     }
     reset();
     isSendingTx.value = true;
-    const {connectedWallet} = storeToRefs(useWalletStore())
+    const { connectedWallet } = storeToRefs(useWalletStore())
     const { selectedBlockchain } = storeToRefs(useBlockchainStore())
     try {
       // request sequence and acc number
-      const acc = await getAccount(selectedBlockchain.value?.api[0] || '', connectedWallet.value?.cosmosAddress || '');
+      const acc = await getAccount(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '');
+      console.log(connectedWallet.value?.cosmosAddress)
       const tx = {
           chainId: selectedBlockchain.value?.chainId || '',
           signerAddress: connectedWallet.value?.cosmosAddress ?? '',
@@ -77,7 +78,8 @@ export const useTransactionStore = defineStore('dh-transaction', () => {
       
       if(!skipGasEstimation.value) {
         let gasEstimationSuccess = false;
-        await client.simulate(selectedBlockchain.value?.api[0] || '' , tx, broadcastMode).then(gas => {
+        console.log(selectedBlockchain.value?.rest)
+        await client.simulate(selectedBlockchain.value?.rest || '' , tx, broadcastMode).then(gas => {
           // update tx gas
           tx.fee.gas = (gas * 1.25).toFixed()
           gasEstimationSuccess = true;
@@ -94,14 +96,14 @@ export const useTransactionStore = defineStore('dh-transaction', () => {
       }
 
       const txRaw = await client.sign(tx);
-      const response = await client.broadcastTx(selectedBlockchain.value?.api[0] || '', txRaw, broadcastMode);
+      const response = await client.broadcastTx(selectedBlockchain.value?.rest || '', txRaw, broadcastMode);
 
       // show submitting view
       txHash.value = response.tx_response.txhash
 
       txMsg.value = 'Tx Submitted';
       maxFetchTry.value = 0;
-      fetchTx(txHash.value, selectedBlockchain.value?.api[0] || '')
+      fetchTx(txHash.value, selectedBlockchain.value?.rest || '')
       return Promise.resolve(txHash.value);
     } catch (e) {
         txStep.value = 100;

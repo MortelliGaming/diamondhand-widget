@@ -74,11 +74,6 @@ function disableGasEstimation() {
     </v-card>
 </div>
 </template>
-<script lang="ts" scoped>
-export default {
-    name: 'TxDialog',
-};
-</script>
 <style lang="scss">
 .tx-dialog-card {
     min-width: 400px;

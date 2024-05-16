@@ -44,7 +44,7 @@ const validatorList = computed(() => {
 })
 
 const validator = computed(() => {
-  return validatorList.value.find(v => v.value == toBech32(selectedBlockchain.value?.addr_prefix + 'valoper', fromBech32(connectedWallet.value?.cosmosAddress || '').data))
+  return validatorList.value.find(v => v.value == toBech32(selectedBlockchain.value?.bech32Config.bech32PrefixValAddr || '', fromBech32(connectedWallet.value?.cosmosAddress || '').data))
 })
 // const params = computed(() => JSON.parse(props.params || "{}"))
 const rewards = ref([] as { reward: { amount: string, denom: string }, validator_address: string }[])
@@ -97,10 +97,10 @@ async function initial() {
   if(props.params) {
     //
   }
-  getDelegateRewards(selectedBlockchain.value?.api[0] || '', connectedWallet.value?.cosmosAddress || '').then(x => {
+  getDelegateRewards(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '').then(x => {
     rewards.value = x.rewards
   })
-  await getActiveValidators(selectedBlockchain.value?.api[0] || '').then(x => {
+  await getActiveValidators(selectedBlockchain.value?.rest || '').then(x => {
       activeValidators.value = x.validators
   })
 }
