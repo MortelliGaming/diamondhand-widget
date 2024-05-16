@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ChainInfo } from '@keplr-wallet/types'
 import ConnectWalletMenu from './ConnectWalletMenu.vue'
-import { type PropType, ref } from 'vue';
+import { type PropType, ref, defineExpose, watch } from 'vue';
 import { useBlockchainStore } from '../../lib/stores/blockchain';
 import { storeToRefs } from 'pinia';
 
@@ -20,9 +20,21 @@ const connectMenu = ref({
     connectWallet: () => {}
 })
 
+function connectWallet() {
+    connectMenu.value?.connectWallet();
+}
 selectedBlockchain.value = props.blockchainConfig
+watch(props, () => {
+    if(props.blockchainConfig) {
+        selectedBlockchain.value = props.blockchainConfig
+        connectWallet()
+        console.log('bc config changed')
+    }
+})
 
-connectMenu.value?.connectWallet();
+defineExpose({
+    connectWallet,
+});
 
 </script>
 <template>

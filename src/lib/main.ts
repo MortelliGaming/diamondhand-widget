@@ -26,14 +26,6 @@ const DiamondhandWidgetPlugin = (app: App)=> {
     // registerPlugins(app)
     app.use(createPinia())
     // app.use(i18n)
-    app.component(
-        "dh-connect-wallet",
-        DhConnectWallet
-    );
-    app.component(
-        "dh-tx-dialog",
-        DhConnectWallet
-    );
     return app;
 }
 
@@ -44,7 +36,6 @@ export {
     useWalletStore,
     useBlockchainStore,
     useTransactionStore,
-    // Components
-    DhConnectWallet, 
-    DhTxDialog,
-};
+    DhConnectWallet,
+    DhTxDialog
+}
