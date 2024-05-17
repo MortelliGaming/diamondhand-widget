@@ -4,7 +4,7 @@ import components from 'vuetify/dist/vuetify.js' //For having types in all files
 import DhConnectWallet from './components/ConnectWallet/ConnectWallet.vue';
 import DhTxDialog from './components/TxDialog/TxDialog.vue';
 
-import { Account } from './lib/wallet/Wallet';
+import { Account, WalletName } from './lib/wallet/Wallet';
 import { BlockchainConfigSimple, type TxDialogParams } from './lib/utils/type';
 import { Ref, ref } from 'vue';
 import { ChainInfo } from '@keplr-wallet/types';
@@ -91,7 +91,7 @@ const crossfi: Ref<ChainInfo> = ref({
 const dhTxDialog = ref<InstanceType<typeof DhTxDialog>>();
 
 function handleWalletConnected(wallet: Account) {
-  dhTxDialog.value?.show('delegate', {
+  dhTxDialog.value?.show('delegate', WalletName.Metamask, {
     fees: {
       amount: '2000',
       denom: 'mpx',
@@ -108,7 +108,7 @@ function handleWalletConnected(wallet: Account) {
 }
 
 setTimeout(() => {
-  dhTxDialog.value?.show('deposit')
+  dhTxDialog.value?.show('deposit', WalletName.Metamask)
 }, 100)
 </script>
 

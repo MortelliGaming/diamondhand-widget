@@ -8,19 +8,30 @@ import {
     writeWallet,
     removeWallet, 
     type ConnectedWallet,
-    type Account
+    type Account,
+    readWallet
 } from '../wallet/Wallet'
 import { getBalance } from '../utils/http';
 import type { Coin } from '../utils/type';
 import { useBlockchainStore } from './blockchain';
 import { TokenUnitConverter } from '../utils/TokenUnitConverter';
+import { coinType2HDPath } from '../utils/format';
 
 export const useWalletStore = defineStore('dh-wallet', () => {
-  const connectedWallet: Ref<ConnectedWallet|null> = ref(null)// ref(readWallet(selectedWallet.value, props.hdPath) as ConnectedWallet);
+  // const connectedWallet: Ref<ConnectedWallet|null> = ref(null)// ref(readWallet(selectedWallet.value, props.hdPath) as ConnectedWallet);
+
+  const connectedWallet: Ref<Partial<{
+    [id in WalletName]: ConnectedWallet|undefined
+  }>> = ref({
+    [WalletName.Keplr]: undefined,
+    [WalletName.Metamask]: undefined,
+  })
 
   const accountBalances: Ref<Coin[]> = ref([])
   const sending = ref(false);
   const error = ref('');
+
+  const { selectedBlockchain, coinMetadatas } = storeToRefs(useBlockchainStore())
 
   const walletList = ref([
     {
@@ -41,20 +52,34 @@ export const useWalletStore = defineStore('dh-wallet', () => {
     }
   ]);
 
-  async function loadBalances() {
-    const { selectedBlockchain, coinMetadatas } = storeToRefs(useBlockchainStore())
-    const balancesResult = await getBalance(selectedBlockchain.value?.rest ?? '', connectedWallet.value?.cosmosAddress ?? '')
-    
-    const converter = new TokenUnitConverter(Object.assign({},coinMetadatas.value))
-    // convert to display denom
-    const balances = balancesResult.balances?.map(b => {
-      try {
-        return converter.baseToDisplay(b)
-      } catch {
-        return b
+  function loadWalletsFromLocalStorage() {
+    for(const wallet in WalletName) {
+      if(wallet) {
+        const hdPath = coinType2HDPath(selectedBlockchain.value?.bip44.coinType)
+        const savedWallet = readWallet(WalletName[wallet], hdPath) as ConnectedWallet
+        if(savedWallet && Object.keys(savedWallet).length > 0) {
+          connectedWallet.value[wallet] = savedWallet
+        }
       }
-    });
-    accountBalances.value = [...balances, ...balancesResult.balances];
+    }
+  }
+
+  async function loadBalances() {
+    for(const wallet of Object.values(connectedWallet.value)) {
+      if(wallet) {
+        const balancesResult = await getBalance(selectedBlockchain.value?.rest ?? '', connectedWallet.value[wallet.wallet]?.cosmosAddress ?? '')
+        const converter = new TokenUnitConverter(Object.assign({},coinMetadatas.value))
+        // convert to display denom
+        const balances = balancesResult.balances?.map(b => {
+          try {
+            return converter.baseToDisplay(b)
+          } catch {
+            return b
+          }
+        });
+        accountBalances.value = [...balances, ...balancesResult.balances];
+      }
+    }
   }
 
   async function connect(walletName: WalletName, chainId: string, hdPath: string, addrPrefix: string) {
@@ -70,14 +95,15 @@ export const useWalletStore = defineStore('dh-wallet', () => {
           accounts = await wa.getAccounts();
           if (accounts.length > 0) {
               const [first] = accounts;
-              connectedWallet.value = {
-                  wallet: walletName,
-                  cosmosAddress: first.address,
-                  evmAddress: first.evmAddress,
-                  hdPath: hdPath,
-                  accounts
+              
+              connectedWallet.value[walletName] = {
+                wallet: walletName,
+                cosmosAddress: first.address,
+                evmAddress: first.evmAddress,
+                hdPath: hdPath,
+                accounts
               };
-              writeWallet(connectedWallet.value);
+              writeWallet(connectedWallet.value[walletName]!);
               loadBalances()
           }
       } catch (e: any) {
@@ -87,9 +113,18 @@ export const useWalletStore = defineStore('dh-wallet', () => {
       return Promise.resolve(connectedWallet.value)
   }
 
-  function disconnect() {
-    removeWallet(connectedWallet.value?.wallet || WalletName.Keplr, connectedWallet.value?.hdPath || '');
-    connectedWallet.value = null;
+  function disconnect(walletName: WalletName|undefined) {
+    if(walletName && connectedWallet.value[walletName]) {
+      removeWallet(walletName, connectedWallet.value[walletName]!.hdPath);
+      connectedWallet.value[walletName] = undefined
+    } else {
+      for(const wallet of Object.values(connectedWallet.value)) {
+        if(wallet) {
+          removeWallet(wallet.wallet, connectedWallet.value[wallet.wallet]!.hdPath);
+          connectedWallet.value[wallet.wallet] = undefined
+        }
+      }
+    }
   }
 
   return { 
@@ -99,6 +134,7 @@ export const useWalletStore = defineStore('dh-wallet', () => {
     error,
     accountBalances,
     connect,
-    disconnect
+    disconnect,
+    loadWalletsFromLocalStorage
   }
 })

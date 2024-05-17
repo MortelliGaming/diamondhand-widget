@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, type ComputedRef } from 'vue';
+import { Ref, computed, inject, ref, type ComputedRef } from 'vue';
 import { getActiveValidators, getDelegateRewards } from '../../../lib/utils/http';
 
 import { useWalletStore } from '../../../lib/stores/wallet';
@@ -10,6 +10,7 @@ import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
 import { decimal2percent } from '../../../lib/utils/format';
 import { fromBech32, toBech32 } from '@cosmjs/encoding';
+import { WalletName } from '../../../lib/wallet/Wallet';
 
 const { t } = useI18n({
     messages
@@ -21,6 +22,7 @@ const { selectedBlockchain } = storeToRefs(useBlockchainStore())
 const props = defineProps({
     params: Object as any
 })
+const walletName: Ref<WalletName> = inject('walletName') || ref(WalletName.Keplr)
 
 const activeValidators = ref([])
 const inactiveValidators = ref([])
@@ -44,7 +46,7 @@ const validatorList = computed(() => {
 })
 
 const validator = computed(() => {
-  return validatorList.value.find(v => v.value == toBech32(selectedBlockchain.value?.bech32Config.bech32PrefixValAddr || '', fromBech32(connectedWallet.value?.cosmosAddress || '').data))
+  return validatorList.value.find(v => v.value == toBech32(selectedBlockchain.value?.bech32Config.bech32PrefixValAddr || '', fromBech32(connectedWallet.value[walletName.value]?.cosmosAddress || '').data))
 })
 // const params = computed(() => JSON.parse(props.params || "{}"))
 const rewards = ref([] as { reward: { amount: string, denom: string }, validator_address: string }[])
@@ -54,7 +56,7 @@ const msgs = computed(() => {
     return {
       typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
       value: {
-        delegatorAddress: connectedWallet.value?.cosmosAddress,
+        delegatorAddress: connectedWallet.value[walletName.value]?.cosmosAddress,
         validatorAddress: x.validator_address,
       },
     }
@@ -73,7 +75,7 @@ const msgs = computed(() => {
 const isValid = computed(() => {
   let ok = true
   let error = ""
-  if (!connectedWallet.value?.cosmosAddress) {
+  if (!connectedWallet.value[walletName.value]?.cosmosAddress) {
     ok = false
     error = "Sender is empty"
   }
@@ -97,7 +99,7 @@ async function initial() {
   if(props.params) {
     //
   }
-  getDelegateRewards(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '').then(x => {
+  getDelegateRewards(selectedBlockchain.value?.rest || '', connectedWallet.value[walletName.value]?.cosmosAddress || '').then(x => {
     rewards.value = x.rewards
   })
   await getActiveValidators(selectedBlockchain.value?.rest || '').then(x => {

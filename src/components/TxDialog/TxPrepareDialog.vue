@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, type PropType } from 'vue';
+import { ref, computed, type PropType, Ref, inject } from 'vue';
 import { storeToRefs } from 'pinia';
 import {
     getLatestBlock,
@@ -35,6 +35,7 @@ import ClearAdmin from './wasm/ClearAdmin.vue';
 
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../lib/i18n';
+import { WalletName } from '../../lib/wallet/Wallet';
 
 const { t } = useI18n({
     messages
@@ -85,6 +86,8 @@ const msgType = computed(() => {
 const { selectedBlockchain } = storeToRefs(useBlockchainStore())
 const { connectedWallet, accountBalances } = storeToRefs(useWalletStore())
 
+const walletName: Ref<WalletName> = inject('walletName') || ref(WalletName.Keplr)
+
 const { sendTx } = useTransactionStore()
 
 const advance = ref(false);
@@ -110,7 +113,7 @@ const chainId = ref('cosmoshub-4');
 const broadcast = ref(BroadcastMode.SYNC);
 
 async function initData() {
-    if (selectedBlockchain.value?.rest || '' && connectedWallet.value?.cosmosAddress) {
+    if (selectedBlockchain.value?.rest || '' && connectedWallet.value[walletName.value]?.cosmosAddress) {
 
         if(props.params?.fees) {
             feeAmount.value = parseInt(props.params.fees.amount)
@@ -137,8 +140,8 @@ async function initData() {
     }
 }
 
-function sendTransaction() {
-    sendTx({
+function sendTransaction(walletName: WalletName) {
+    sendTx(walletName, {
         feeDenom: feeDenom.value,
         feeAmount: feeAmount.value.toString(),
         gasLimit: gasInfo.value.toString(),
@@ -164,7 +167,7 @@ defineExpose({
 </script>
 <template>
     <div>
-        <v-card v-if="!connectedWallet?.cosmosAddress || connectedWallet?.cosmosAddress == ''" class="tx-dialog-card">
+        <v-card v-if="!connectedWallet[walletName]?.cosmosAddress || connectedWallet[walletName]?.cosmosAddress == ''" class="tx-dialog-card">
             <v-card-title class="d-flex align-center">
                 <div class="flex-grow-1">{{ t('dhWidget.dhTxDialog.dialogTitle') }}</div>
             </v-card-title>
@@ -262,7 +265,7 @@ defineExpose({
                     >
                     {{msgBox.isValid.error}}
                     </v-chip>
-                    <v-btn @click="sendTransaction" :disabled="sending || !msgBox.isValid.ok">
+                    <v-btn @click="() => sendTransaction(walletName)" :disabled="sending || !msgBox.isValid.ok">
                         {{ t('dhWidget.dhTxDialog.send') }}
                     </v-btn>
                 </div>

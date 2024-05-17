@@ -17,7 +17,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, type PropType, type Ref } from 'vue';
+import { provide, ref, type PropType, type Ref } from 'vue';
 
 import TxProgressDialog from './TxProgressDialog.vue';
 import TxPrepareDialog from './TxPrepareDialog.vue';
@@ -30,6 +30,7 @@ import { useTransactionStore } from '../../lib/stores/transaction';
 import { watch } from 'vue';
 import { ChainInfo } from '@keplr-wallet/types';
 import { storeToRefs } from 'pinia';
+import { WalletName } from '../../lib/wallet/Wallet';
 
 enum DialogState {
     DIALOG_STATE_PREPARE,
@@ -48,6 +49,8 @@ const props = defineProps({
     },
 });
 
+const walletName: Ref<WalletName> = ref(WalletName.Keplr)
+
 const dialogState = ref(DialogState.DIALOG_STATE_PREPARE)
 
 const txType = ref('send')
@@ -58,10 +61,11 @@ const visible = ref(false)
 
 const emit = defineEmits(['submitted', 'confirmed', 'error']);
 
-function show(txMessageType: DhDialogMessageType, dialogParams?: TxDialogParams) {
+function show(txMessageType: DhDialogMessageType, wallet: WalletName, dialogParams?: TxDialogParams) {
     if(props.blockchainConfig) {
         selectedBlockchain.value = props.blockchainConfig
     }
+    walletName.value = wallet
     skipGasEstimation.value = false
     txError.value = ''
     txMsg.value = ''
@@ -79,6 +83,8 @@ function show(txMessageType: DhDialogMessageType, dialogParams?: TxDialogParams)
 function hide() {
     visible.value = false;
 }
+
+provide('walletName', walletName);
 
 defineExpose({
     show,

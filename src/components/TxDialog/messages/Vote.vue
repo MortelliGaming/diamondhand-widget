@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type PropType, computed, ref, type Ref } from 'vue';
+import { type PropType, computed, ref, type Ref, inject } from 'vue';
 
 import { useWalletStore } from '../../../lib/stores/wallet';
 import { useBlockchainStore } from '../../../lib/stores/blockchain';
@@ -8,6 +8,7 @@ import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
 import type { GovProposalMetadata, VoteParams } from '../../../lib/utils/type';
+import { WalletName } from '../../../lib/wallet/Wallet';
 
 const { t } = useI18n({
     messages
@@ -19,6 +20,7 @@ const { votingProposals } = storeToRefs(useBlockchainStore())
 const props = defineProps({
     params: Object as PropType<VoteParams>
 })
+const walletName: Ref<WalletName> = inject('walletName') || ref(WalletName.Keplr)
 
 const proposal: Ref<GovProposalMetadata|null> = ref(null)
 const option = ref("1")
@@ -27,7 +29,7 @@ const msgs = computed(() => {
     return [{
         typeUrl: '/cosmos.gov.v1beta1.MsgVote',
         value: {
-            voter: connectedWallet.value?.cosmosAddress,
+            voter: connectedWallet.value[walletName.value]?.cosmosAddress,
             proposalId: proposal.value?.proposal_id,
             option: Number(option.value),
         },

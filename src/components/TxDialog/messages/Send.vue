@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type PropType, computed, ref } from 'vue';
+import { type PropType, computed, ref, Ref, inject } from 'vue';
 import {
     getStakingParam,
 } from '../../../lib/utils/http';
@@ -12,6 +12,7 @@ import { storeToRefs } from 'pinia';
 
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
+import { WalletName } from '../../../lib/wallet/Wallet';
 
 const { t } = useI18n({
     messages
@@ -20,6 +21,7 @@ const { t } = useI18n({
 const props = defineProps({
     params: Object as PropType<SendParams>,
 });
+const walletName: Ref<WalletName> = inject('walletName') || ref(WalletName.Keplr)
 
 const { connectedWallet, accountBalances } = storeToRefs(useWalletStore())
 const { selectedBlockchain, coinMetadatas } = storeToRefs(useBlockchainStore())
@@ -35,7 +37,7 @@ const msgs = computed(() => {
         {
             typeUrl: '/cosmos.bank.v1beta1.MsgSend',
             value: {
-                fromAddress: connectedWallet.value?.cosmosAddress,
+                fromAddress: connectedWallet.value[walletName.value]?.cosmosAddress,
                 toAddress: recipient.value,
                 amount: [
                 convert.displayToBase(meta?.base || '', {

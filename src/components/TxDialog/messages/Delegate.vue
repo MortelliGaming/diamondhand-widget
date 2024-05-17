@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type ComputedRef, type PropType, computed, ref } from 'vue';
+import { type ComputedRef, type PropType, computed, ref, Ref, inject } from 'vue';
 import {
     getActiveValidators,
     getInactiveValidators,
@@ -17,6 +17,7 @@ import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
 import type { Validator } from "cosmjs-types/cosmos/staking/v1beta1/staking"
+import { WalletName } from '../../../lib/wallet/Wallet';
 
 const { t } = useI18n({
     messages
@@ -38,13 +39,15 @@ const unbondingTime = ref('');
 const amount = ref(0);
 const amountDenom = ref('');
 
+const walletName: Ref<WalletName> = inject('walletName') || ref(WalletName.Keplr)
+
 const msgs = computed(() => {
     const convert = new TokenUnitConverter(coinMetadatas.value);
     return [
         {
             typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
             value: {
-                delegatorAddress: connectedWallet.value?.cosmosAddress,
+                delegatorAddress: connectedWallet.value[walletName.value]?.cosmosAddress,
                 validatorAddress: validator.value,
                 amount: convert.displayToBase(stakingDenom.value, {
                     amount: String(amount.value),
@@ -150,7 +153,7 @@ initial()
             <v-text-field
                 :disabled="true"
                 density="compact"
-                :model-value="connectedWallet?.cosmosAddress"
+                :model-value="connectedWallet[walletName]?.cosmosAddress"
                 :label="t('dhWidget.dhTxDialog.delegator')"
             ></v-text-field>
         </v-col>

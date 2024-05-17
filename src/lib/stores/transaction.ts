@@ -32,7 +32,7 @@ export const useTransactionStore = defineStore('dh-transaction', () => {
     isSendingTx.value = false;
   }
 
-  async function sendTx({feeAmount, feeDenom, messages, memo, gasLimit, broadcastMode}: {
+  async function sendTx(walletName: WalletName, {feeAmount, feeDenom, messages, memo, gasLimit, broadcastMode}: {
     feeDenom: string,
     feeAmount: string,
     messages: any[],
@@ -49,11 +49,10 @@ export const useTransactionStore = defineStore('dh-transaction', () => {
     const { selectedBlockchain } = storeToRefs(useBlockchainStore())
     try {
       // request sequence and acc number
-      const acc = await getAccount(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '');
-      console.log(connectedWallet.value?.cosmosAddress)
+      const acc = await getAccount(selectedBlockchain.value?.rest || '', connectedWallet.value[walletName]?.cosmosAddress || '');
       const tx = {
           chainId: selectedBlockchain.value?.chainId || '',
-          signerAddress: connectedWallet.value?.cosmosAddress ?? '',
+          signerAddress: connectedWallet.value[walletName]?.cosmosAddress ?? '',
           messages,
           fee: {
               gas: "200000",
@@ -69,7 +68,7 @@ export const useTransactionStore = defineStore('dh-transaction', () => {
           },
       };
       console.log('tx:', tx);
-      const current = readWallet(WalletName.Keplr, connectedWallet.value?.hdPath);
+      const current = readWallet(walletName, connectedWallet.value[walletName]?.hdPath);
       const wallet = current ? current.wallet : WalletName.Keplr;
       const client = new UniClient(wallet, {
           chainId: selectedBlockchain.value?.chainId,

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type ComputedRef, type PropType, type Ref, computed, ref } from 'vue';
+import { type ComputedRef, type PropType, type Ref, computed, ref, inject } from 'vue';
 import { getActiveValidators, getInactiveValidators, getStakingParam, getDelegationsByDelegator } from '../../../lib/utils/http'
 import { decimal2percent } from '../../../lib/utils/format'
 import type { Coin, RedelegateParams } from '../../../lib/utils/type';
@@ -13,6 +13,7 @@ import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
 import { fromBech32, toBech32 } from '@cosmjs/encoding';
 import type { Validator } from "cosmjs-types/cosmos/staking/v1beta1/staking"
+import { WalletName } from '../../../lib/wallet/Wallet';
 
 const { t } = useI18n({
     messages
@@ -21,6 +22,7 @@ const { t } = useI18n({
 const props = defineProps({
     params: Object as PropType<RedelegateParams>,
 });
+const walletName: Ref<WalletName> = inject('walletName') || ref(WalletName.Keplr)
 
 
 const { connectedWallet } = storeToRefs(useWalletStore())
@@ -50,7 +52,7 @@ const msgs = computed(() => {
     return [{
         typeUrl: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
         value: {
-          delegatorAddress: connectedWallet.value?.cosmosAddress,
+          delegatorAddress: connectedWallet.value[walletName.value]?.cosmosAddress,
           validatorSrcAddress: validator.value,
           validatorDstAddress: destinationValidator.value,
           amount: convert.displayToBase(stakingDenom.value, {
@@ -148,7 +150,7 @@ async function initial() {
         amountDenom.value = props.params.denom;
     }
 
-    await getDelegationsByDelegator(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '').then(x => {
+    await getDelegationsByDelegator(selectedBlockchain.value?.rest || '', connectedWallet.value[walletName.value]?.cosmosAddress || '').then(x => {
         delegations.value = x.delegation_responses
         if(delegations.value?.length > 0 && validator.value == '') {
             validator.value = delegations.value[0].delegation.validator_address

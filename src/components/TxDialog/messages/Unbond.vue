@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type PropType, computed, ref, type ComputedRef, type Ref } from 'vue';
+import { type PropType, computed, ref, type ComputedRef, type Ref, inject } from 'vue';
 import { getActiveValidators, getDelegationsByDelegator, getStakingParam } from '../../../lib/utils/http'
 import type { Coin, UnbondParams } from '../../../lib/utils/type';
 import { TokenUnitConverter } from '../../../lib/utils/TokenUnitConverter';
@@ -12,6 +12,7 @@ import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
 import { toBech32, fromBech32 } from '@cosmjs/encoding';
 import { decimal2percent } from '../../../lib/utils/format';
+import { WalletName } from '../../../lib/wallet/Wallet';
 
 const { t } = useI18n({
     messages
@@ -20,6 +21,7 @@ const { t } = useI18n({
 const props = defineProps({
     params: Object as PropType<UnbondParams>,
 });
+const walletName: Ref<WalletName> = inject('walletName') || ref(WalletName.Keplr)
 
 const { connectedWallet } = storeToRefs(useWalletStore())
 const { selectedBlockchain, coinMetadatas } = storeToRefs(useBlockchainStore())
@@ -47,7 +49,7 @@ const msgs = computed(() => {
     return [{
         typeUrl: '/cosmos.staking.v1beta1.MsgUndelegate',
         value: {
-          delegatorAddress: connectedWallet.value?.cosmosAddress,
+          delegatorAddress: connectedWallet.value[walletName.value]?.cosmosAddress,
           validatorAddress: validator.value,
           amount: convert.displayToBase(stakingDenom.value, {
             amount: String(amount.value),
@@ -80,7 +82,7 @@ const units = computed(() => {
 const isValid = computed(() => {
     let ok = true
     let error = ""
-    if(connectedWallet.value?.cosmosAddress == '') {
+    if(connectedWallet.value[walletName.value]?.cosmosAddress == '') {
         ok = false
         error = "Sender is empty"
     }
@@ -131,7 +133,7 @@ async function initial() {
         amountDenom.value = props.params.denom;
     }
 
-    await getDelegationsByDelegator(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '').then(x => {
+    await getDelegationsByDelegator(selectedBlockchain.value?.rest || '', connectedWallet.value[walletName.value]?.cosmosAddress || '').then(x => {
         delegations.value = x.delegation_responses
         if(delegations.value?.length > 0 && validator.value == '') {
             validator.value = delegations.value[0].delegation?.validator_address

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { Ref, computed, inject, ref } from 'vue';
 import { getDelegateRewards } from '../../../lib/utils/http'
 
 import { useWalletStore } from '../../../lib/stores/wallet';
@@ -8,6 +8,7 @@ import { storeToRefs } from 'pinia';
 
 import { useI18n } from 'vue-i18n';
 import { messages } from '../../../lib/i18n/index';
+import { WalletName } from '../../../lib/wallet/Wallet';
 
 const { t } = useI18n({
     messages
@@ -19,6 +20,8 @@ const { selectedBlockchain } = storeToRefs(useBlockchainStore())
 const props = defineProps({
     params: Object as any
 })
+const walletName: Ref<WalletName> = inject('walletName') || ref(WalletName.Keplr)
+
 const rewards = ref([] as { reward: { amount: string, denom: string }, validator_address: string }[])
 
 const msgs = computed(() => {
@@ -26,7 +29,7 @@ const msgs = computed(() => {
         return {
             typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
             value: {
-                delegatorAddress: connectedWallet.value?.cosmosAddress,
+                delegatorAddress: connectedWallet.value[walletName.value]?.cosmosAddress,
                 validatorAddress: x.validator_address,
             },
         }
@@ -36,7 +39,7 @@ const msgs = computed(() => {
 const isValid = computed(() => {
     let ok = true
     let error = ""
-    if (!connectedWallet.value?.cosmosAddress) {
+    if (!connectedWallet.value[walletName.value]?.cosmosAddress) {
         ok = false
         error = "Sender is empty"
     }
@@ -51,7 +54,7 @@ function initial() {
     if(props.params) {
         // 
     }
-    getDelegateRewards(selectedBlockchain.value?.rest || '', connectedWallet.value?.cosmosAddress || '').then(x => {
+    getDelegateRewards(selectedBlockchain.value?.rest || '', connectedWallet.value[walletName.value]?.cosmosAddress || '').then(x => {
         rewards.value = x.rewards
     })
 }

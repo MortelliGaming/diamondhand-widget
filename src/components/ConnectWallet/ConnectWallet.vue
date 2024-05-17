@@ -15,19 +15,18 @@ const props = defineProps({
 const emit = defineEmits(['connect', 'disconnect', 'bech32Address', 'evmAddress']);
 
 const { selectedBlockchain } = storeToRefs(useBlockchainStore())
-
-const connectMenu = ref({
-    connectWallet: () => {}
-})
+const connectMenu = ref<InstanceType<typeof ConnectWalletMenu>>()
 
 function connectWallet() {
     connectMenu.value?.connectWallet();
 }
 selectedBlockchain.value = props.blockchainConfig
+setTimeout(connectWallet, 10);
+
 watch(props, () => {
     if(props.blockchainConfig) {
         selectedBlockchain.value = props.blockchainConfig
-        connectWallet()
+        connectWallet();
         console.log('bc config changed')
     }
 })
