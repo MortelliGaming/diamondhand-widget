@@ -45,15 +45,11 @@
                     v-for="(i, index) in walletList"
                     :value="index"
                     :prepend-avatar="i.logo"
-                    @click="() => selectWallet(i.wallet)"
+                    @click="() => connectWallet(i.wallet)"
                     :selected="i.wallet == selectedWallet"
                     :key="i.wallet"
                     >
                         <v-list-item-title>{{ i.wallet }}</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item class="text-center">
-                        <v-btn icon="mdi-cog-outline" @click="requestSettings" color="primary" />
-                        <v-btn @click="connectWallet" color="secondary">{{t('dhWidget.dhConnectWallet.selectWallet')}}</v-btn>
                     </v-list-item>
                 </v-list>
             </v-card-text>
@@ -86,13 +82,12 @@ const emit = defineEmits(['connect', 'disconnect', 'settings', 'bech32Address', 
 
 const overlayOpen = ref(false)
 
-function selectWallet(walletName: WalletName) {
-    selectedWallet.value = walletName
-}
 function toggleOverlay() {
     overlayOpen.value  = !overlayOpen.value;
 }
-function connectWallet() {
+
+function connectWallet(walletName: WalletName) {
+    selectedWallet.value = walletName
     connectedWallet.value = null
     console.log(selectedBlockchain.value?.chainId)
     connect(selectedWallet.value ?? WalletName.Keplr, selectedBlockchain.value?.chainId ?? '', coinType2HDPath(parseInt(selectedBlockchain.value?.bip44?.coinType.toString() || '118')) ?? '', selectedBlockchain.value?.bech32Config.bech32PrefixAccAddr ?? '')
