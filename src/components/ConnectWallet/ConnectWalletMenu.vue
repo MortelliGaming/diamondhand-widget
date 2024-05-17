@@ -45,7 +45,7 @@
                     v-for="(i, index) in walletList"
                     :value="index"
                     :prepend-avatar="i.logo"
-                    @click="() => connectWallet(i.wallet)"
+                    @click="() => selectAndConnect(i.wallet)"
                     :selected="i.wallet == selectedWallet"
                     :key="i.wallet"
                     >
@@ -86,8 +86,12 @@ function toggleOverlay() {
     overlayOpen.value  = !overlayOpen.value;
 }
 
-function connectWallet(walletName: WalletName) {
-    selectedWallet.value = walletName
+function selectAndConnect(walletName: WalletName) {
+    selectedWallet.value = walletName;
+    connectWallet();
+}
+
+function connectWallet() {
     connectedWallet.value = null
     console.log(selectedBlockchain.value?.chainId)
     connect(selectedWallet.value ?? WalletName.Keplr, selectedBlockchain.value?.chainId ?? '', coinType2HDPath(parseInt(selectedBlockchain.value?.bip44?.coinType.toString() || '118')) ?? '', selectedBlockchain.value?.bech32Config.bech32PrefixAccAddr ?? '')
@@ -100,13 +104,10 @@ function connectWallet(walletName: WalletName) {
         }
     })
 }
+
 function disconnectWallet() {
     disconnect();
     emit('disconnect')
-}
-
-function requestSettings() {
-    emit('settings')
 }
 
 defineExpose({
