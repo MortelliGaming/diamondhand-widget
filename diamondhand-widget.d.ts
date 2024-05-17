@@ -12,6 +12,8 @@ export type {
     VoteParams,
 } from './src/lib/utils/type'
 
+export { WalletName } from './src/lib/main'
+
 // Plugin
 declare const DiamondhandWidgetPlugin: (app: App<any>) => any
 export { DiamondhandWidgetPlugin }

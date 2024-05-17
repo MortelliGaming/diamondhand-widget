@@ -85,7 +85,11 @@ const crossfi: Ref<ChainInfo> = ref({
       }
     }
   ],
-  "features": ["eth-address-gen", "eth-key-sign", "ibc-transfer", "ibc-go", "cosmwasm"]
+  "features": ["eth-address-gen", "eth-key-sign", "ibc-transfer", "ibc-go", "cosmwasm"],
+  "evm": {
+    "rpc": '',
+    "chainId": 0,
+  }
 })
 
 const dhTxDialog = ref<InstanceType<typeof DhTxDialog>>();

@@ -10,6 +10,7 @@ export type {
     VoteParams,
 } from '../lib/utils/type'
 
+export { WalletName } from './wallet/Wallet'
 // I18n
 
 // Components
@@ -21,6 +22,7 @@ import { useWalletStore } from './stores/wallet'
 import { useBlockchainStore } from './stores/blockchain'
 import { useTransactionStore } from './stores/transaction'
 import { createPinia } from 'pinia'
+import { WalletName } from './wallet/Wallet';
 
 const DiamondhandWidgetPlugin = (app: App)=> {
     // registerPlugins(app)
