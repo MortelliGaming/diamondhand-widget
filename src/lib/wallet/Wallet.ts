@@ -2,19 +2,19 @@ import { Registry } from '@cosmjs/proto-signing'
 import { defaultRegistryTypes } from "@cosmjs/stargate";
 import type { Transaction } from "../utils/type";
 import { KeplerWallet } from './wallets/KeplerWallet';
-import { LedgerWallet } from './wallets/LedgerWallet';
+// import { LedgerWallet } from './wallets/LedgerWallet';
 import { MetamaskWallet } from './wallets/MetamaskWallet';
-import { MetamaskSnapWallet } from './wallets/MetamaskSnapWallet';
-import { LeapWallet } from './wallets/LeapWallet';
+// import { MetamaskSnapWallet } from './wallets/MetamaskSnapWallet';
+// import { LeapWallet } from './wallets/LeapWallet';
 import { isEthermint } from './UniClient';
 
 export enum WalletName {
     Keplr = "Keplr",
-    Ledger = "LedgerUSB",
-    LedgerBLE = "LedgerBLE",
+    // Ledger = "LedgerUSB",
+    // LedgerBLE = "LedgerBLE",
     Metamask = "Metamask",
-    MetamaskSnap = "MetamaskSnap",
-    Leap = "Leap",
+    // MetamaskSnap = "MetamaskSnap",
+    // Leap = "Leap",
     // None Signning
     Address = "Address",
     NameService = "Nameservice",
@@ -94,7 +94,7 @@ export function createWallet(name: WalletName, arg: WalletArgument, registry?: R
     switch (name) {
         case WalletName.Keplr:
             return new KeplerWallet(arg, reg)
-        case WalletName.Ledger:
+        /* case WalletName.Ledger:
             return new LedgerWallet(arg, reg)
         case WalletName.Leap:
             return new LeapWallet(arg, reg)
@@ -103,7 +103,9 @@ export function createWallet(name: WalletName, arg: WalletArgument, registry?: R
         case WalletName.Metamask:
             return arg.hdPath && 
             (arg.hdPath.startsWith('m/44/60') || arg.hdPath.startsWith("m/44'/60")) 
-            ? new MetamaskWallet(arg, reg) : new MetamaskSnapWallet(arg, reg)
+            ? new MetamaskWallet(arg, reg) : new MetamaskSnapWallet(arg, reg) */
+        case WalletName.Metamask:
+            return new MetamaskWallet(arg, reg)
     }
     throw new Error("No wallet connected")
 }

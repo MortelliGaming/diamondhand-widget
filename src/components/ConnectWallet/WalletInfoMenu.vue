@@ -30,14 +30,14 @@ const walletList = ref([
         wallet: WalletName.Keplr,
         logo: 'https://ping.pub/logos/keplr-logo.svg',
     },
-    {
+    /*{
         wallet: WalletName.Ledger,
         logo: 'https://ping.pub/logos/ledger.webp',
     },
     {
         wallet: WalletName.Leap,
         logo: 'https://assets.leapwallet.io/logos/leap-cosmos-logo.svg',
-    },
+    },*/
     {
         wallet: WalletName.Metamask,
         logo: 'https://ping.pub/logos/metamask.png',
