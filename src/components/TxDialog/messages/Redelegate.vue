@@ -179,7 +179,7 @@ defineExpose({msgs, isValid, initial})
             <v-text-field
                 :disabled="true"
                 density="compact"
-                :model-value="connectedWallet?.cosmosAddress"
+                :model-value="connectedWallet[walletName]?.cosmosAddress"
                 :label="t('dhWidget.dhTxDialog.delegator')"
             ></v-text-field>
         </v-col>

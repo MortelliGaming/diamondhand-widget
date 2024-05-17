@@ -56,9 +56,9 @@ export const useWalletStore = defineStore('dh-wallet', () => {
     for(const wallet in WalletName) {
       if(wallet) {
         const hdPath = coinType2HDPath(selectedBlockchain.value?.bip44.coinType)
-        const savedWallet = readWallet(WalletName[wallet], hdPath) as ConnectedWallet
+        const savedWallet = readWallet(WalletName[wallet as keyof typeof WalletName], hdPath) as ConnectedWallet
         if(savedWallet && Object.keys(savedWallet).length > 0) {
-          connectedWallet.value[wallet] = savedWallet
+          connectedWallet.value[WalletName[wallet as keyof typeof WalletName]] = savedWallet
         }
       }
     }
